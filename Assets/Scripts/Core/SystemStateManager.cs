@@ -9,7 +9,10 @@ namespace ARFishApp.Core
         Anatomy,
         Habitat,
         Feeding,
-        Ecosystem
+        InterspeciesRelations,
+        PredatorPrey,
+        Quiz,
+        Portal
     }
 
     /// <summary>

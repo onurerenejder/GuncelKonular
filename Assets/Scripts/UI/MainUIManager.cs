@@ -24,9 +24,24 @@ namespace ARFishApp.UI
             SystemStateManager.Instance.ChangeState(ModuleType.Feeding);
         }
 
-        public void OnEcosystemButtonClicked()
+        public void OnInterspeciesButtonClicked()
         {
-            SystemStateManager.Instance.ChangeState(ModuleType.Ecosystem);
+            SystemStateManager.Instance.ChangeState(ModuleType.InterspeciesRelations);
+        }
+
+        public void OnPredatorPreyButtonClicked()
+        {
+            SystemStateManager.Instance.ChangeState(ModuleType.PredatorPrey);
+        }
+
+        public void OnQuizButtonClicked()
+        {
+            SystemStateManager.Instance.ChangeState(ModuleType.Quiz);
+        }
+
+        public void OnPortalButtonClicked()
+        {
+            SystemStateManager.Instance.ChangeState(ModuleType.Portal);
         }
     }
 }
