@@ -201,3 +201,9 @@ Kodu derlemek ve çalıştırmak için sisteminizde kurulu olması gerekenler:
 5. Ekrandaki kullanıcı arayüzü (UI) panelini kullanarak **Anatomi, Habitat, Beslenme ve Ekosistem** katmanları/görünümleri arasında eşzamanlı geçiş yapabilirsiniz.
 
 ---
+
+## 🧭 Yol Haritası (Kalan Tasklar)
+
+Kalan işlerin faz bazlı ve Trello'ya uygun görev listesi için:
+
+- [KALAN_TASKLAR_README.md](./KALAN_TASKLAR_README.md)
