@@ -5,23 +5,26 @@ namespace ARFishApp.Modules
 {
     public class PredatorPreyModule : MonoBehaviour, IModule
     {
-        [Header("Machine Learning / AI Constraints")]
+        [Header("Apex Vision & Neural AI")]
         public GameObject apexPredatorPrefab;
-        public float chaseSpeed = 3.8f;
-        public float collisionAvoidanceWeight = 2.0f;
+        public float chasePacingSpeed = 3.8f;
+        public float aiCollisionAvoidanceWeight = 2.0f;
         
-        [Header("Biological Prey Defenses")]
+        [Tooltip("Field of View angle limits. The predator visually scans within this cone mathematically.")]
+        [Range(10f, 360f)] public float neuralVisionAngleCone = 90f;
+        
+        [Header("Prey Bio-Chromatic Defense System")]
         public Renderer preySkinRenderer;
-        public Color camouflageColor = new Color(0.6f, 0.5f, 0.4f); // Mimes sand/ocean floor tones
-        public GameObject inkCloudParticle; 
+        public Color camouflageEnvironmentTone = new Color(0.6f, 0.5f, 0.4f); 
+        public GameObject inkOpticJammerParticle; 
         
-        private GameObject activePredator;
-        private Color originalSkinColor;
-        private bool isDefenseCurrentlyActive = false;
+        private GameObject generatedApexPredator;
+        private Color standardOriginalSkinTheme;
+        private bool isEvadingEngaged = false;
 
         private void Start()
         {
-            if (preySkinRenderer != null) originalSkinColor = preySkinRenderer.material.color;
+            if (preySkinRenderer != null) standardOriginalSkinTheme = preySkinRenderer.material.color;
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
             OnModuleDeactivated();
         }
@@ -41,74 +44,85 @@ namespace ARFishApp.Modules
 
         public void OnModuleActivated()
         {
-            if (apexPredatorPrefab != null && activePredator == null)
+            if (apexPredatorPrefab != null && generatedApexPredator == null)
             {
-                Vector3 ambushCoordinate = transform.position + (transform.right * 4.5f) + (transform.up * 1f);
-                activePredator = Instantiate(apexPredatorPrefab, ambushCoordinate, Quaternion.LookRotation(transform.position - ambushCoordinate));
+                // Ambush placement coordinate geometry calculations
+                Vector3 ambushCoordinatePlane = transform.position + (transform.right * 4.5f) + (transform.up * 1f);
+                generatedApexPredator = Instantiate(apexPredatorPrefab, ambushCoordinatePlane, Quaternion.LookRotation(transform.position - ambushCoordinatePlane));
             }
         }
 
         public void OnModuleDeactivated()
         {
-            if (activePredator != null) Destroy(activePredator);
-            if (preySkinRenderer != null) preySkinRenderer.material.color = originalSkinColor;
-            isDefenseCurrentlyActive = false;
+            if (generatedApexPredator != null) Destroy(generatedApexPredator);
+            if (preySkinRenderer != null) preySkinRenderer.material.color = standardOriginalSkinTheme;
+            isEvadingEngaged = false;
         }
 
         private void Update()
         {
-            if (activePredator == null) return;
+            if (generatedApexPredator == null) return;
 
-            float distanceToPrey = Vector3.Distance(activePredator.transform.position, transform.position);
+            float absolutePhysicalDistanceToPrey = Vector3.Distance(generatedApexPredator.transform.position, transform.position);
+            Vector3 unitDirectionToPrey = (transform.position - generatedApexPredator.transform.position).normalized;
 
-            // Execute AI Pathfinding Vectors
-            Vector3 desiredTrajectory = (transform.position - activePredator.transform.position).normalized;
-            InjectObstacleAvoidanceSteering(ref desiredTrajectory);
-
-            activePredator.transform.position += desiredTrajectory * chaseSpeed * Time.deltaTime;
-            activePredator.transform.rotation = Quaternion.Slerp(activePredator.transform.rotation, Quaternion.LookRotation(desiredTrajectory), Time.deltaTime * 6f);
-
-            // Nervous System threshold triggers
-            if (distanceToPrey < 3.0f && !isDefenseCurrentlyActive)
-            {
-                TriggerBiologicalDefenseSystem();
-            }
-
-            if (distanceToPrey <= 1.0f)
-            {
-                // Prey invokes Panic Evasion maneuver computing a rapid cross-product escape route
-                Vector3 evasionVector = Vector3.Cross(transform.up, desiredTrajectory);
-                transform.position += evasionVector * 6f * Time.deltaTime;
-            }
-        }
-
-        /// <summary>
-        /// Raycast-based environmental awareness AI. Reping obstacle normals to push Predator trajectory away from physical walls.
-        /// </summary>
-        private void InjectObstacleAvoidanceSteering(ref Vector3 currentPath)
-        {
-            if (Physics.Raycast(activePredator.transform.position, activePredator.transform.forward, out RaycastHit hitInfo, 2.5f))
-            {
-                // Push the heading away utilizing the geometry's inverse normal vector
-                Vector3 repulsiveNormal = hitInfo.normal;
-                currentPath = Vector3.Lerp(currentPath, repulsiveNormal, collisionAvoidanceWeight * Time.deltaTime).normalized;
-                Debug.DrawRay(activePredator.transform.position, repulsiveNormal * 2, Color.red);
-            }
-        }
-
-        private void TriggerBiologicalDefenseSystem()
-        {
-            isDefenseCurrentlyActive = true;
-            Debug.Log("[AI Engine] Predator in critical proximity range! Executing Chromatic Camouflage & Particulate Evasion.");
+            // Optical Field of View (FoV) implementation tracking angle magnitude directly on the Matrix
+            float angleDiscrepancyToPrey = Vector3.Angle(generatedApexPredator.transform.forward, unitDirectionToPrey);
             
-            if (preySkinRenderer != null)
-                preySkinRenderer.material.color = camouflageColor;
-
-            if (inkCloudParticle != null)
+            if (angleDiscrepancyToPrey <= neuralVisionAngleCone * 0.5f)
             {
-                // Spreads optical illusion / ink to confuse AI logic
-                GameObject cloud = Instantiate(inkCloudParticle, transform.position, Quaternion.identity);
-                Destroy(cloud, 3.5f);
+                // Target has been visually acquired - Establish Chase Link
+                Vector3 optimizedCalculatedTrajectory = unitDirectionToPrey;
+                ExtrapolateRaycastObstacleAvoidance(ref optimizedCalculatedTrajectory);
+
+                generatedApexPredator.transform.position += optimizedCalculatedTrajectory * chasePacingSpeed * Time.deltaTime;
+                generatedApexPredator.transform.rotation = Quaternion.Slerp(generatedApexPredator.transform.rotation, Quaternion.LookRotation(optimizedCalculatedTrajectory), Time.deltaTime * 6f);
+            }
+            else
+            {
+                // Prey is completely outside the optical FoV cone. AI falls back to a confused Patrol Loop.
+                generatedApexPredator.transform.Rotate(0, 45f * Time.deltaTime, 0); 
+                generatedApexPredator.transform.position += generatedApexPredator.transform.forward * (chasePacingSpeed * 0.4f) * Time.deltaTime;
+            }
+
+            // Prey Biological System Overrides
+            if (absolutePhysicalDistanceToPrey < 3.0f && !isEvadingEngaged)
+            {
+                EngageBiologicalChromaticResponse();
+            }
+
+            if (absolutePhysicalDistanceToPrey <= 1.0f)
+            {
+                // Extinction Danger Threshold Reached: Force orthogonal computing maneuver
+                Vector3 mathematicalEvasionNode = Vector3.Cross(transform.up, unitDirectionToPrey);
+                transform.position += mathematicalEvasionNode * 6f * Time.deltaTime;
+            }
+        }
+
+        private void ExtrapolateRaycastObstacleAvoidance(ref Vector3 currentTrajectoryNode)
+        {
+            // Emits lasers out of the predator's head. If a rock is hit, it takes the normal vector and repels the predator path.
+            Vector3 originPoint = generatedApexPredator.transform.position;
+            Vector3 forwardRay = generatedApexPredator.transform.forward;
+            
+            if (Physics.Raycast(originPoint, forwardRay, out RaycastHit physicalHitDetection, 2.5f))
+            {
+                currentTrajectoryNode = Vector3.Lerp(currentTrajectoryNode, physicalHitDetection.normal, aiCollisionAvoidanceWeight * Time.deltaTime).normalized;
+                Debug.DrawRay(originPoint, physicalHitDetection.normal * 2, Color.red);
+            }
+        }
+
+        private void EngageBiologicalChromaticResponse()
+        {
+            isEvadingEngaged = true;
+            Debug.Log("[Stealth AI Sub-System] Apex entity breached proximity defenses! Engaging Adaptive Coloration matrix & Jet Emission.");
+            
+            if (preySkinRenderer != null) preySkinRenderer.material.color = camouflageEnvironmentTone;
+
+            if (inkDefensiveParticle != null)
+            {
+                GameObject opticalJammerEntity = Instantiate(inkDefensiveParticle, transform.position, Quaternion.identity);
+                Destroy(opticalJammerEntity, 3.5f);
             }
         }
     }

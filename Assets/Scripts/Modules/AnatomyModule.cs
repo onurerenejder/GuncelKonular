@@ -5,31 +5,53 @@ using ARFishApp.Core;
 
 namespace ARFishApp.Modules
 {
+    [System.Serializable]
+    public class OrganSystem
+    {
+        public string systemName;
+        public Renderer organRenderer;
+        public bool isPulsating;
+        public float pulseRate = 1.0f;
+        public float pulseMagnitude = 0.05f;
+        [HideInInspector] public Vector3 originalScale;
+    }
+
     public class AnatomyModule : MonoBehaviour, IModule
     {
-        [Header("X-Ray Shader & Advanced Clipping")]
+        [Header("X-Ray Compute Architecture")]
         public Renderer skinRenderer;
-        public List<Renderer> internalOrgans;
         public GameObject skeletonModel;
+        public List<OrganSystem> biologicalSystems;
         
-        [Tooltip("If true, it passes data directly to the GPU Fragment Shader for procedural pixel clipping instead of fading alpha.")]
+        [Tooltip("Direct GPU Instruction pass for boolean occlusion.")]
         public bool useComputeShaderClipping = true;
         public string clippingPlaneProperty = "_ClipHeightAxis_Y";
 
-        [Header("Animation Parameters")]
+        [Header("Runtime Simulation Physics")]
         public float scanExecutionSpeed = 1.2f;
-
         private Coroutine activeScanRoutine;
+        private List<Coroutine> pulseCoroutines = new List<Coroutine>();
 
         private void Start()
         {
-            if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
+            foreach (var organ in biologicalSystems)
+            {
+                if (organ.organRenderer != null)
+                {
+                    organ.originalScale = organ.organRenderer.transform.localScale;
+                }
+            }
+
+            if (SystemStateManager.Instance != null)
+                SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
+                
             OnModuleDeactivated();
         }
 
         private void OnDestroy()
         {
-            if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
+            if (SystemStateManager.Instance != null)
+                SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
         }
 
         private void HandleStateChanged(ModuleType newType)
@@ -43,39 +65,70 @@ namespace ARFishApp.Modules
         public void OnModuleActivated()
         {
             if (activeScanRoutine != null) StopCoroutine(activeScanRoutine);
-            activeScanRoutine = StartCoroutine(ProceduralCrossSectionScan(true));
+            activeScanRoutine = StartCoroutine(ProceduralBiologicalScan(true));
             
             if (skeletonModel != null)
             {
                 skeletonModel.SetActive(true);
                 StartCoroutine(ExecuteBonesSkeletalAssembly());
             }
+
+            // Engage Biological rhythms
+            foreach(var organ in biologicalSystems)
+            {
+                if (organ.isPulsating && organ.organRenderer != null)
+                {
+                    pulseCoroutines.Add(StartCoroutine(BiologicalPulseSimulation(organ)));
+                }
+            }
         }
 
         public void OnModuleDeactivated()
         {
             if (activeScanRoutine != null) StopCoroutine(activeScanRoutine);
-            if (gameObject.activeInHierarchy)
-                activeScanRoutine = StartCoroutine(ProceduralCrossSectionScan(false));
+            if (gameObject.activeInHierarchy) activeScanRoutine = StartCoroutine(ProceduralBiologicalScan(false));
                 
             if (skeletonModel != null) skeletonModel.SetActive(false);
             
-            foreach(var organ in internalOrgans) if (organ != null) organ.gameObject.SetActive(false);
+            foreach (var c in pulseCoroutines) if (c != null) StopCoroutine(c);
+            pulseCoroutines.Clear();
+
+            foreach(var organ in biologicalSystems) 
+            {
+                if (organ.organRenderer != null) 
+                {
+                    organ.organRenderer.gameObject.SetActive(false);
+                    organ.organRenderer.transform.localScale = organ.originalScale;
+                }
+            }
         }
 
-        private IEnumerator ProceduralCrossSectionScan(bool isScanning)
+        /// <summary>
+        /// Highly threaded coroutine to simulate Heartbeats or breathing Gills using sine-wave oscillations.
+        /// </summary>
+        private IEnumerator BiologicalPulseSimulation(OrganSystem organ)
+        {
+            while (true)
+            {
+                // Sine wave based continuous smooth expansion and contraction
+                float dynamicScale = 1.0f + Mathf.Sin(Time.time * Mathf.PI * 2f * organ.pulseRate) * organ.pulseMagnitude;
+                organ.organRenderer.transform.localScale = organ.originalScale * dynamicScale;
+                yield return (null);
+            }
+        }
+
+        private IEnumerator ProceduralBiologicalScan(bool isScanning)
         {
             if (skinRenderer == null) yield break;
 
             Material mat = skinRenderer.material;
-            // Define the bounding box bounds for the 3D slicing threshold
             float currentHeight = isScanning ? 1.5f : -1.5f;
             float targetHeight = isScanning ? -1.5f : 1.5f;
 
             if (isScanning)
             {
-                // Pre-warm physical structures into memory before scan crosses them
-                foreach(var organ in internalOrgans) if (organ != null) organ.gameObject.SetActive(true);
+                foreach(var organ in biologicalSystems) 
+                    if (organ.organRenderer != null) organ.organRenderer.gameObject.SetActive(true);
             }
 
             while (Mathf.Abs(currentHeight - targetHeight) > 0.05f)
@@ -84,24 +137,20 @@ namespace ARFishApp.Modules
                 
                 if (useComputeShaderClipping)
                 {
-                    // Real-time GPU Instruction: discard pixels outside the bounded mathematical Y-Plane 
                     mat.SetFloat(clippingPlaneProperty, currentHeight);
                 }
                 else
                 {
-                    // Legacy Fallback (Standard Renderer)
                     Color c = mat.color;
                     c.a = Mathf.Clamp01(Mathf.InverseLerp(-1.5f, 1.5f, currentHeight));
                     mat.color = c;
                 }
-                
                 yield return null;
             }
         }
 
         private IEnumerator ExecuteBonesSkeletalAssembly()
         {
-            // Simulate advanced organic biological 3D printing of the spine and bones
             Vector3 targetScale = Vector3.one; 
             skeletonModel.transform.localScale = new Vector3(1f, 0.01f, 1f);
             
@@ -109,9 +158,8 @@ namespace ARFishApp.Modules
             while(t < 1f)
             {
                 t += Time.deltaTime * 1.5f;
-                // Mathematical ease-out curve formula (Cubic Out) for biological momentum visualization
-                float biologicalEaseOut = 1f - Mathf.Pow(1f - t, 3f); 
-                skeletonModel.transform.localScale = Vector3.Lerp(new Vector3(1f, 0.01f, 1f), targetScale, biologicalEaseOut);
+                float easeOut = 1f - Mathf.Pow(1f - t, 3f); 
+                skeletonModel.transform.localScale = Vector3.Lerp(new Vector3(1f, 0.01f, 1f), targetScale, easeOut);
                 yield return null;
             }
         }

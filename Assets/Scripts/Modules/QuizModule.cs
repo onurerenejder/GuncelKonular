@@ -5,28 +5,44 @@ using System.Collections.Generic;
 
 namespace ARFishApp.Modules
 {
+    [System.Serializable]
+    public class QuizQuestion
+    {
+        public string expectedHotspotId;
+        [TextArea] public string questionDescription;
+        [Tooltip("The starting theoretical maximum points awarded for this level.")]
+        public int baseLevelPoints = 100;
+    }
+
     public class QuizModule : MonoBehaviour, IModule
     {
-        [Header("Quiz System Data")]
-        public List<string> organsToFind = new List<string> { "Gills", "Heart", "Dorsal Fin" };
-        public GameObject successParticlePrefab;
-        public ParticleSystem errorBuzzerParticle;
+        [Header("Gamification Database System")]
+        public List<QuizQuestion> cloudQuestionDatabase = new List<QuizQuestion>();
+        public GameObject successConfettiParticle;
+        public ParticleSystem errorBuzzerEmission;
         
+        [Header("State Tracking Variables")]
         private int currentQuestionIndex = 0;
-        private int currentScore = 0;
+        private int currentGlobalCalculatedScore = 0;
+        private float continuousQuestionTimer = 0f;
 
         private void Start()
         {
-            if (SystemStateManager.Instance != null)
-                SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
-            
+            // Safely seed a robust default database to prevent NRE limits (Can be overwritten by API Cloud calls)
+            if (cloudQuestionDatabase.Count == 0)
+            {
+                cloudQuestionDatabase.Add(new QuizQuestion { expectedHotspotId = "Gills", questionDescription = "Which critical organ extracts dissolved oxygen from the water current?" });
+                cloudQuestionDatabase.Add(new QuizQuestion { expectedHotspotId = "Heart", questionDescription = "Which organ pumps blood throughout the fish's vascular system?" });
+                cloudQuestionDatabase.Add(new QuizQuestion { expectedHotspotId = "Dorsal Fin", questionDescription = "Identify the vertical fin that stabilizes the fish against rolling and assists in sudden turns." });
+            }
+
+            if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
             OnModuleDeactivated();
         }
 
         private void OnDestroy()
         {
-            if (SystemStateManager.Instance != null)
-                SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
+            if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
         }
 
         private void HandleStateChanged(ModuleType newType)
@@ -40,48 +56,66 @@ namespace ARFishApp.Modules
         public void OnModuleActivated()
         {
             currentQuestionIndex = 0;
-            currentScore = 0;
-            AskNextQuestion();
+            currentGlobalCalculatedScore = 0;
+            InvokeNextDatabaseQuestion();
         }
 
         public void OnModuleDeactivated()
         {
-            Debug.Log($"[Quiz Module] Deactivated. Final Score: {currentScore}/{organsToFind.Count}");
+            Debug.Log($"[Gamification UI Engine] Quiz Terminated. Final Secured Score: {currentGlobalCalculatedScore}");
         }
 
-        private void AskNextQuestion()
+        private void Update()
         {
-            if (currentQuestionIndex < organsToFind.Count)
+            // Frame execution logic strictly computing time depletion for the score formula
+            if (SystemStateManager.Instance.CurrentModule == GetModuleType() && currentQuestionIndex < cloudQuestionDatabase.Count)
             {
-                Debug.Log($"[Quiz Module] QUESTION {currentQuestionIndex + 1}: Find the {organsToFind[currentQuestionIndex]}!");
+                continuousQuestionTimer += Time.deltaTime;
+            }
+        }
+
+        private void InvokeNextDatabaseQuestion()
+        {
+            if (currentQuestionIndex < cloudQuestionDatabase.Count)
+            {
+                continuousQuestionTimer = 0f; // Reset chronometer
+                var queueItem = cloudQuestionDatabase[currentQuestionIndex];
+                Debug.Log($"[Gamification Engine] LEVEL {currentQuestionIndex + 1}: {queueItem.questionDescription}");
+                // This string can now be forwarded to a TextMeshPro UI Object dynamically!
             }
             else
             {
-                Debug.Log($"[Quiz Module] QUIZ COMPLETE! You scored: {currentScore} / {organsToFind.Count}");
+                Debug.Log($"[Gamification Engine] GRAND FINALE! All modules analyzed. Cumulative Player Score: {currentGlobalCalculatedScore}");
             }
         }
 
         public void ValidateHotspotTap(HotspotNode node)
         {
-            // Ignore if quiz is not active or finished
-            if (SystemStateManager.Instance.CurrentModule != GetModuleType() || currentQuestionIndex >= organsToFind.Count) return;
+            // Pre-validation to discard arbitrary taps out-of-context
+            if (SystemStateManager.Instance.CurrentModule != GetModuleType() || currentQuestionIndex >= cloudQuestionDatabase.Count) return;
 
-            string target = organsToFind[currentQuestionIndex];
+            var activeLevelTarget = cloudQuestionDatabase[currentQuestionIndex];
 
-            if (node.organName == target)
+            if (node.organName == activeLevelTarget.expectedHotspotId)
             {
-                Debug.Log($"[Quiz Module] CORRECT! You found the {target}.");
-                currentScore++;
-                if (successParticlePrefab != null) Instantiate(successParticlePrefab, node.transform.position, Quaternion.identity);
+                // Dynamic time-depletion scoring algorithm. You lose 2 points for every second you hesitate.
+                int hesitationPenalty = Mathf.Clamp(Mathf.FloorToInt(continuousQuestionTimer * 2f), 0, activeLevelTarget.baseLevelPoints - 20);
+                int earnedPoints = activeLevelTarget.baseLevelPoints - hesitationPenalty;
+                currentGlobalCalculatedScore += earnedPoints;
+
+                Debug.Log($"[Validation System] CORRECT IDENTITY! You clicked {node.organName}. Awarding {earnedPoints} Points! (Solved in {continuousQuestionTimer:F1}s). Total Vault: {currentGlobalCalculatedScore}");
+                
+                if (successConfettiParticle != null) Instantiate(successConfettiParticle, node.transform.position, Quaternion.identity);
             }
             else
             {
-                Debug.Log($"[Quiz Module] WRONG! You tapped the {node.organName}, not the {target}.");
-                if (errorBuzzerParticle != null) errorBuzzerParticle.Play();
+                Debug.Log($"[Validation System] ASSET MISMATCH! Sensor received {node.organName}, but mission demands {activeLevelTarget.expectedHotspotId}. Zero parameters awarded.");
+                if (errorBuzzerEmission != null) errorBuzzerEmission.Play();
             }
 
-            currentQuestionIndex++; // Move to next question regardless of correct/wrong
-            AskNextQuestion();
+            // Push state array index forward
+            currentQuestionIndex++;
+            InvokeNextDatabaseQuestion();
         }
     }
 }

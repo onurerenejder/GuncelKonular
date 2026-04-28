@@ -8,30 +8,34 @@ namespace ARFishApp.Modules
     {
         public enum DietType { Carnivore, Herbivore }
 
-        [Header("Feeding Anatomy & Logic")]
+        [Header("Procedural Inverse Kinematics (IK Spine Bending)")]
+        [Tooltip("The actual neck/spine bone of the 3D model. We procedurally control its local rotation to track the food.")]
+        public Transform headBone;
+        public float ikTrackingSpeed = 5.0f;
+        public float maxProceduralBendAngle = 45f;
+
+        [Header("Feeding Logic Engine")]
         public DietType fishDiet;
         public Animator jawAnimator;
         public Transform mouthSocket;
         
-        [Header("Dynamic Procedural Food Elements")]
+        [Header("Procedural Physics & Particle Interactions")]
         public GameObject meatPreyPrefab;
         public GameObject vegetationPrefab;
         public ParticleSystem hitBloodMuzzle;
         public ParticleSystem hitAlgaeMuzzle;
 
-        private GameObject currentTarget;
+        private GameObject currentFoodTarget;
 
         private void Start()
         {
-            if (SystemStateManager.Instance != null)
-                SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
+            if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
             OnModuleDeactivated();
         }
 
         private void OnDestroy()
         {
-            if (SystemStateManager.Instance != null)
-                SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
+            if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
         }
 
         private void HandleStateChanged(ModuleType newType)
@@ -45,61 +49,85 @@ namespace ARFishApp.Modules
         public void OnModuleActivated()
         {
             StopAllCoroutines();
-            StartCoroutine(FeedingSequence());
+            StartCoroutine(FeedingSequenceController());
         }
 
         public void OnModuleDeactivated()
         {
-            if (currentTarget != null) Destroy(currentTarget);
+            if (currentFoodTarget != null) Destroy(currentFoodTarget);
             if (jawAnimator != null) jawAnimator.SetBool("IsBiting", false);
+            
+            // Release IK overrides mathematically
+            if (headBone != null) headBone.localRotation = Quaternion.identity;
         }
 
-        private IEnumerator FeedingSequence()
+        /// <summary>
+        /// LateUpdate is strictly required to override animation system transforms.
+        /// Here we calculate an IK Lookat constraint manually towards the food.
+        /// </summary>
+        private void LateUpdate()
         {
-            // Spawn Food floating in front of the mouth
-            Vector3 spawnPoint = transform.position + (transform.forward * 1.5f) + (Vector3.up * 0.5f);
+            if (SystemStateManager.Instance.CurrentModule == GetModuleType() && currentFoodTarget != null && headBone != null)
+            {
+                // Vector geometry to point spine/head bone at the food
+                Vector3 directionToFood = (currentFoodTarget.transform.position - headBone.position).normalized;
+                Quaternion targetLookRotation = Quaternion.LookRotation(directionToFood, transform.up);
+                
+                // Clamping the spherical rotation to strictly avoid breaking the spine's topology
+                float deviationAngle = Quaternion.Angle(transform.rotation, targetLookRotation);
+                if (deviationAngle <= maxProceduralBendAngle)
+                {
+                    headBone.rotation = Quaternion.Slerp(headBone.rotation, targetLookRotation, Time.deltaTime * ikTrackingSpeed);
+                }
+            }
+        }
+
+        private IEnumerator FeedingSequenceController()
+        {
+            // Calculate a completely randomized spawn zone within the fish's vision
+            Vector3 spawnPoint = transform.position + (transform.forward * 2.0f) + (transform.right * Random.Range(-0.8f, 0.8f));
             
             if (fishDiet == DietType.Carnivore && meatPreyPrefab != null)
-                currentTarget = Instantiate(meatPreyPrefab, spawnPoint, Quaternion.identity);
+                currentFoodTarget = Instantiate(meatPreyPrefab, spawnPoint, Quaternion.identity);
             else if (fishDiet == DietType.Herbivore && vegetationPrefab != null)
-                currentTarget = Instantiate(vegetationPrefab, spawnPoint, Quaternion.identity);
+                currentFoodTarget = Instantiate(vegetationPrefab, spawnPoint, Quaternion.identity);
 
-            // Wait for user or simulation to register target existence
-            yield return new WaitForSeconds(1.0f);
+            // Wait 1.5 seconds, specifically allowing the IK math to bend the fish toward the food
+            yield return new WaitForSeconds(1.5f);
 
-            // Execute Jaw Extension (Vertex/Bone animation)
             if (jawAnimator != null) jawAnimator.SetTrigger("BiteTrigger");
             
-            // Simulating a fast strike leap forward
-            float dashTime = 0.2f;
-            Vector3 startPos = transform.position;
+            // Execute Burst Translation
+            float executionTimeRemaining = 0.25f;
+            Vector3 defaultAnchorPos = transform.position;
             
-            while (dashTime > 0)
+            while (executionTimeRemaining > 0)
             {
-                transform.position = Vector3.Lerp(transform.position, spawnPoint, 0.1f);
-                dashTime -= Time.deltaTime;
+                transform.position = Vector3.Lerp(transform.position, spawnPoint, 0.15f);
+                executionTimeRemaining -= Time.deltaTime;
                 yield return null;
             }
 
-            // Consumption Logic
-            if (currentTarget != null)
+            // Cleanup & Digestion phase
+            if (currentFoodTarget != null)
             {
-                Destroy(currentTarget);
+                Destroy(currentFoodTarget);
                 
-                // Spawn appropriate debris/gore particles based on biological diet type
                 if (fishDiet == DietType.Carnivore && hitBloodMuzzle != null)
                     Instantiate(hitBloodMuzzle, mouthSocket.position, Quaternion.identity).Play();
                 else if (fishDiet == DietType.Herbivore && hitAlgaeMuzzle != null)
                     Instantiate(hitAlgaeMuzzle, mouthSocket.position, Quaternion.identity).Play();
             }
 
-            // Return to neutral hover
-            yield return new WaitForSeconds(0.5f);
-            float returnTime = 0.5f;
-            while(returnTime > 0)
+            yield return new WaitForSeconds(0.4f);
+            
+            // Recovery algorithm back to center anchor
+            float returnTimeLimit = 0.6f;
+            while(returnTimeLimit > 0)
             {
-                transform.position = Vector3.Lerp(transform.position, startPos, 0.05f);
-                returnTime -= Time.deltaTime;
+                float polynomialEase = 1f - (returnTimeLimit / 0.6f);
+                transform.position = Vector3.Lerp(transform.position, defaultAnchorPos, polynomialEase * 0.1f);
+                returnTimeLimit -= Time.deltaTime;
                 yield return null;
             }
         }
