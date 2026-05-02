@@ -1,22 +1,45 @@
-/* Note: Setup designed for Photon PUN 2 network integration. Uncomment after importing PUN.
-using Photon.Pun;
-*/
 using UnityEngine;
 using ARFishApp.Core;
+using ARFishApp.Interaction;
+
+#if PUN_2_OR_NEWER
+using Photon.Pun;
+using Photon.Realtime;
+#endif
 
 namespace ARFishApp.Network
 {
     /// <summary>
-    /// Professional Multiplayer Setup using Photon PUN architectural style.
+    /// Teacher -> student synchronization layer.
+    /// Synchronizes module changes and basic hotspot interactions.
     /// </summary>
-    public class NetworkStateManager : MonoBehaviour /* MonoBehaviourPunCallbacks */
+    public class NetworkStateManager :
+#if PUN_2_OR_NEWER
+        MonoBehaviourPunCallbacks
+#else
+        MonoBehaviour
+#endif
     {
+        [Header("Classroom Role")]
         public bool isTeacherMode = false;
-        // private PhotonView photonView;
+
+        [Header("Sync Options")]
+        public bool syncModuleState = true;
+        public bool syncHotspotInteractions = true;
+
+#if PUN_2_OR_NEWER
+        private PhotonView photonView;
+#endif
 
         private void Awake()
         {
-            // photonView = GetComponent<PhotonView>();
+#if PUN_2_OR_NEWER
+            photonView = GetComponent<PhotonView>();
+            if (photonView == null)
+            {
+                Debug.LogError("[Network Sync] PhotonView is required on NetworkStateManager for RPC synchronization.");
+            }
+#endif
         }
 
         private void Start()
@@ -25,6 +48,8 @@ namespace ARFishApp.Network
             {
                 SystemStateManager.Instance.OnStateChanged += OnLocalStateChanged;
             }
+
+            HotspotNode.OnAnyHotspotTapped += OnLocalHotspotTapped;
         }
 
         private void OnDestroy()
@@ -33,38 +58,80 @@ namespace ARFishApp.Network
             {
                 SystemStateManager.Instance.OnStateChanged -= OnLocalStateChanged;
             }
+
+            HotspotNode.OnAnyHotspotTapped -= OnLocalHotspotTapped;
         }
 
         private void OnLocalStateChanged(ModuleType newType)
         {
-            if (!isTeacherMode) return; 
+            if (!isTeacherMode || !syncModuleState) return;
 
-            Debug.Log($"[Network Sync] MASTER CLIENT: Sending High-Level RPC to force Student devices into: {newType}");
-            
-            // Activate when Photon PUN is imported:
-            // photonView.RPC("RpcSyncState", RpcTarget.Others, (int)newType);
+#if PUN_2_OR_NEWER
+            if (photonView == null) return;
+            photonView.RPC(nameof(RpcSyncState), RpcTarget.Others, (int)newType);
+            Debug.Log($"[Network Sync] Teacher pushed module state: {newType}");
+#else
+            Debug.LogWarning("[Network Sync] PUN_2_OR_NEWER is not defined. Module sync is inactive until Photon PUN is imported.");
+#endif
         }
 
-        // [PunRPC]
+        private void OnLocalHotspotTapped(HotspotNode hotspot)
+        {
+            if (!isTeacherMode || !syncHotspotInteractions || hotspot == null) return;
+
+#if PUN_2_OR_NEWER
+            if (photonView == null) return;
+            photonView.RPC(nameof(RpcSyncHotspotTap), RpcTarget.Others, hotspot.organName);
+            Debug.Log($"[Network Sync] Teacher pushed hotspot interaction: {hotspot.organName}");
+#else
+            Debug.LogWarning("[Network Sync] PUN_2_OR_NEWER is not defined. Hotspot sync is inactive until Photon PUN is imported.");
+#endif
+        }
+
+#if PUN_2_OR_NEWER
+        [PunRPC]
+#endif
         public void RpcSyncState(int moduleIndex)
         {
-            if (isTeacherMode) return; 
+            if (isTeacherMode || !syncModuleState) return;
 
             ModuleType incomingState = (ModuleType)moduleIndex;
-            Debug.Log($"[Network Sync] CLIENT: Received Authorized Server RPC. Executing Module: {incomingState}");
-            
+            if (SystemStateManager.Instance == null) return;
             SystemStateManager.Instance.ChangeState(incomingState);
+            Debug.Log($"[Network Sync] Student received module state: {incomingState}");
         }
-        
-        /* 
-        // Sync late-joiners (e.g., student joins late, instantly sees what teacher is doing):
-        public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+
+#if PUN_2_OR_NEWER
+        [PunRPC]
+#endif
+        public void RpcSyncHotspotTap(string organName)
         {
-            if (isTeacherMode)
+            if (isTeacherMode || !syncHotspotInteractions || string.IsNullOrWhiteSpace(organName)) return;
+
+            HotspotNode[] allHotspots = FindObjectsOfType<HotspotNode>();
+            for (int i = 0; i < allHotspots.Length; i++)
             {
-                photonView.RPC("RpcSyncState", newPlayer, (int)SystemStateManager.Instance.CurrentModule);
+                HotspotNode node = allHotspots[i];
+                if (node != null && node.organName == organName)
+                {
+                    node.ApplyRemoteTap();
+                    Debug.Log($"[Network Sync] Student applied hotspot interaction: {organName}");
+                    return;
+                }
             }
+
+            Debug.LogWarning($"[Network Sync] Hotspot not found on student scene: {organName}");
         }
-        */
+
+#if PUN_2_OR_NEWER
+        public override void OnPlayerEnteredRoom(Player newPlayer)
+        {
+            if (!isTeacherMode || !syncModuleState || photonView == null || SystemStateManager.Instance == null) return;
+
+            // Late joiner immediately receives the active teaching module.
+            photonView.RPC(nameof(RpcSyncState), newPlayer, (int)SystemStateManager.Instance.CurrentModule);
+            Debug.Log($"[Network Sync] Late-join student synced to: {SystemStateManager.Instance.CurrentModule}");
+        }
+#endif
     }
 }

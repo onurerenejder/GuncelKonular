@@ -6,6 +6,8 @@ namespace ARFishApp.Interaction
     [RequireComponent(typeof(LineRenderer))]
     public class HotspotNode : MonoBehaviour
     {
+        public static event Action<HotspotNode> OnAnyHotspotTapped;
+
         public string organName;
         [TextArea] public string infoDescription;
         public Action<HotspotNode> OnHotspotTapped;
@@ -24,7 +26,18 @@ namespace ARFishApp.Interaction
 
         private void OnMouseDown()
         {
+            ApplyTapInteraction();
+        }
+
+        public void ApplyRemoteTap()
+        {
+            ApplyTapInteraction();
+        }
+
+        private void ApplyTapInteraction()
+        {
             OnHotspotTapped?.Invoke(this);
+            OnAnyHotspotTapped?.Invoke(this);
             ToggleInfoUIPanel();
         }
 
