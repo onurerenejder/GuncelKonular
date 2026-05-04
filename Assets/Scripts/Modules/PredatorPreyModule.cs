@@ -119,9 +119,9 @@ namespace ARFishApp.Modules
             
             if (preySkinRenderer != null) preySkinRenderer.material.color = camouflageEnvironmentTone;
 
-            if (inkDefensiveParticle != null)
+            if (inkOpticJammerParticle != null)
             {
-                GameObject opticalJammerEntity = Instantiate(inkDefensiveParticle, transform.position, Quaternion.identity);
+                GameObject opticalJammerEntity = Instantiate(inkOpticJammerParticle, transform.position, Quaternion.identity);
                 Destroy(opticalJammerEntity, 3.5f);
             }
         }
