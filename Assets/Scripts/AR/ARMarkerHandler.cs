@@ -19,16 +19,16 @@ namespace ARFishApp.AR
         private void Awake()
         {
             trackedImageManager = GetComponent<ARTrackedImageManager>();
+#if !UNITY_EDITOR
             if (fishEntityContainer != null)
-            {
-                fishEntityContainer.SetActive(false); // Hide initially until AR marker is found
-            }
+                fishEntityContainer.SetActive(false);
+#endif
         }
 
-        private void OnEnable() => trackedImageManager.trackedImagesChanged += OnTrackedImagesChanged;
-        private void OnDisable() => trackedImageManager.trackedImagesChanged -= OnTrackedImagesChanged;
+        private void OnEnable() => trackedImageManager.trackablesChanged.AddListener(OnTrackedImagesChanged);
+        private void OnDisable() => trackedImageManager.trackablesChanged.RemoveListener(OnTrackedImagesChanged);
 
-        private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
+        private void OnTrackedImagesChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
         {
             foreach (var trackedImage in eventArgs.added)
                 UpdateFishPosition(trackedImage);
@@ -40,7 +40,7 @@ namespace ARFishApp.AR
             {
                 if (fishEntityContainer != null)
                     fishEntityContainer.SetActive(false);
-                
+
                 SystemStateManager.Instance.ChangeState(ModuleType.None);
             }
         }

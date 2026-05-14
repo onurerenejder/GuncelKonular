@@ -108,7 +108,7 @@ namespace ARFishApp.Network
         {
             if (isTeacherMode || !syncHotspotInteractions || string.IsNullOrWhiteSpace(organName)) return;
 
-            HotspotNode[] allHotspots = FindObjectsOfType<HotspotNode>();
+            HotspotNode[] allHotspots = FindObjectsByType<HotspotNode>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
             for (int i = 0; i < allHotspots.Length; i++)
             {
                 HotspotNode node = allHotspots[i];

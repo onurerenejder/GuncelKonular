@@ -298,7 +298,7 @@ namespace ARFishApp.Modules
             text.fontSize = 30;
             text.horizontalOverflow = HorizontalWrapMode.Overflow;
             text.verticalOverflow = VerticalWrapMode.Overflow;
-            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
             // Compact trophic-level hint to make energy hierarchy explicit.
             string levelPrefix = chainIndex == 0 ? "Üretici/Temel" : $"Trofik {chainIndex}";

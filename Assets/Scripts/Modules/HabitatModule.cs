@@ -90,7 +90,7 @@ namespace ARFishApp.Modules
         private GameObject generatedEnvironmentRoot;
         private DynamicWaterSurface dynamicWaterSurface;
         private Coroutine visualTransitionRoutine;
-        private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+        private MaterialPropertyBlock propertyBlock;
         private readonly Dictionary<Renderer, Color> baseRendererColors = new Dictionary<Renderer, Color>();
         private Color defaultMainLightColor;
         private float defaultMainLightIntensity;
@@ -99,6 +99,11 @@ namespace ARFishApp.Modules
         private float defaultFogDensity;
         private bool defaultFogState;
         private bool defaultsCaptured;
+
+        private void Awake()
+        {
+            propertyBlock = new MaterialPropertyBlock();
+        }
 
         private void Start()
         {

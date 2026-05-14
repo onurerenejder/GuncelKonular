@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a94f686dc0841b39a48c17e70619ca, type: 3}
+  m_Name: BalikData_Demo
+  m_EditorClassIdentifier: Assembly-CSharp::ARFishApp.Data.FishData
+  FishName: Levrek
+  ScientificName: Dicentrarchus labrax
+  GeneralDescription: "Akdeniz'in en yayg\u0131n bal\u0131klar\u0131ndan biri. Hem
+    tuzlu hem tatl\u0131 sularda ya\u015Fayabilir."
+  HasBones: 1
+  AnatomyDescription: "Kemikli yap\u0131ya sahiptir. Solunga\xE7lar\u0131 suda \xE7\xF6z\xFCnm\xFC\u015F
+    oksijeni kana aktar\u0131r."
+  HabitatType: Coastal Marine
+  EnvironmentalLightColor: {r: 0.2, g: 0.5, b: 0.85, a: 1}
+  DietDescription: "K\xFC\xE7\xFCk bal\u0131klar, karides ve yumu\u015Fak\xE7alarla
+    beslenir."
+  FoodChain:
+  - Fitoplankton
+  - Zooplankton
+  - "K\xFC\xE7\xFCk Bal\u0131k"
+  - Levrek
+  Predators:
+  - "K\xF6pek Bal\u0131\u011F\u0131"
+  - Yunus
+  - "B\xFCy\xFCk Orkinos"
+  NarrationAudioClip: {fileID: 0}
