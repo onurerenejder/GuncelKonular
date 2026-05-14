@@ -36,12 +36,18 @@ namespace ARFishApp.Modules
                 cloudQuestionDatabase.Add(new QuizQuestion { expectedHotspotId = "Dorsal Fin", questionDescription = "Identify the vertical fin that stabilizes the fish against rolling and assists in sudden turns." });
             }
 
+            // Subscribe to hotspot tap events
+            HotspotNode.OnAnyHotspotTapped += ValidateHotspotTap;
+
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
             OnModuleDeactivated();
         }
 
         private void OnDestroy()
         {
+            // Unsubscribe from hotspot tap events to prevent memory leaks
+            HotspotNode.OnAnyHotspotTapped -= ValidateHotspotTap;
+            
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
         }
 
