@@ -68,6 +68,13 @@ namespace ARFishApp.Modules
         [Header("Habitat Profiles")]
         public HabitatVisualProfile[] habitatProfiles;
 
+        [Header("Habitat Fish")]
+        public GameObject[] habitatFishPrefabs;
+        [Min(0)] public int habitatFishCount = 8;
+        [Min(0.25f)] public float habitatFishSwimRadius = 2.4f;
+        [Min(0.1f)] public float habitatFishSwimSpeed = 0.8f;
+        [Min(0f)] public float habitatFishHeightRange = 0.8f;
+
         [Header("AR World Tracking Integrations")]
         [Tooltip("Layer mask assigned to AR Foundation generated physical planes (floor/tables).")]
         public LayerMask arFloorMeshLayer;
@@ -90,8 +97,10 @@ namespace ARFishApp.Modules
         private GameObject generatedEnvironmentRoot;
         private DynamicWaterSurface dynamicWaterSurface;
         private Coroutine visualTransitionRoutine;
-        private readonly MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+        private MaterialPropertyBlock propertyBlock;
         private readonly Dictionary<Renderer, Color> baseRendererColors = new Dictionary<Renderer, Color>();
+        private readonly List<Transform> activeHabitatFish = new List<Transform>();
+        private readonly List<Vector3> habitatFishVelocities = new List<Vector3>();
         private Color defaultMainLightColor;
         private float defaultMainLightIntensity;
         private Color defaultAmbientLight;
@@ -100,16 +109,27 @@ namespace ARFishApp.Modules
         private bool defaultFogState;
         private bool defaultsCaptured;
 
+        private void Awake()
+        {
+            propertyBlock = new MaterialPropertyBlock();
+        }
+
         private void Start()
         {
+            Debug.Log("[Habitat Module] Start called. Active in hierarchy: " + gameObject.activeInHierarchy);
             CacheRenderDefaults();
 
             if (SystemStateManager.Instance != null)
             {
                 SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
+                Debug.Log("[Habitat Module] Subscribed to state manager. Current state: " + SystemStateManager.Instance.CurrentModule);
+                HandleStateChanged(SystemStateManager.Instance.CurrentModule);
             }
-
-            OnModuleDeactivated();
+            else
+            {
+                Debug.LogWarning("[Habitat Module] SystemStateManager.Instance is null. Habitat cannot receive state changes.");
+                OnModuleDeactivated();
+            }
         }
 
         private void OnDestroy()
@@ -122,6 +142,7 @@ namespace ARFishApp.Modules
 
         private void HandleStateChanged(ModuleType newType)
         {
+            Debug.Log("[Habitat Module] State received: " + newType);
             if (newType == GetModuleType()) OnModuleActivated();
             else OnModuleDeactivated();
         }
@@ -130,9 +151,11 @@ namespace ARFishApp.Modules
 
         public void OnModuleActivated()
         {
+            Debug.Log("[Habitat Module] Habitat activated");
             CacheRenderDefaults();
 
             HabitatVisualProfile activeProfile = GetActiveProfile();
+            Debug.Log("[Habitat Module] Active profile: " + (activeProfile != null ? activeProfile.habitatType.ToString() : "null"));
             if (activeProfile == null)
             {
                 Debug.LogWarning("[Habitat Module] No habitat profile configured.");
@@ -146,6 +169,7 @@ namespace ARFishApp.Modules
             generatedEnvironmentRoot.transform.SetParent(transform, false);
 
             ScatterObjectsProcedurally(activeProfile.propPrefabs);
+            SpawnHabitatFish();
             BuildDynamicWaterSurface(activeProfile);
             ApplyEnvironmentMaterialLook(activeProfile);
             SyncParticleSystems(activeProfile, true);
@@ -174,6 +198,11 @@ namespace ARFishApp.Modules
                 RenderSettings.fogColor = defaultFogColor;
                 RenderSettings.fogDensity = defaultFogDensity;
             }
+        }
+
+        private void Update()
+        {
+            UpdateHabitatFish();
         }
 
         private HabitatVisualProfile GetActiveProfile()
@@ -283,9 +312,121 @@ namespace ARFishApp.Modules
             }
         }
 
+        private void SpawnHabitatFish()
+        {
+            Debug.Log("[Habitat Module] SpawnFish called");
+            Debug.Log("[Habitat Module] Prefab count: " + (habitatFishPrefabs != null ? habitatFishPrefabs.Length : 0));
+            Debug.Log("[Habitat Module] Fish Count: " + habitatFishCount);
+
+            ClearHabitatFish();
+
+            if (generatedEnvironmentRoot == null || habitatFishPrefabs == null || habitatFishPrefabs.Length == 0)
+            {
+                Debug.LogWarning("[Habitat Module] Fish spawn skipped. Root exists: "
+                    + (generatedEnvironmentRoot != null)
+                    + ", prefab list assigned: "
+                    + (habitatFishPrefabs != null)
+                    + ", prefab count: "
+                    + (habitatFishPrefabs != null ? habitatFishPrefabs.Length : 0));
+                return;
+            }
+
+            for (int i = 0; i < habitatFishCount; i++)
+            {
+                GameObject prefab = habitatFishPrefabs[Random.Range(0, habitatFishPrefabs.Length)];
+                Debug.Log("[Habitat Module] Creating fish " + i + " using prefab: " + (prefab != null ? prefab.name : "null"));
+                if (prefab == null)
+                {
+                    Debug.LogWarning("[Habitat Module] Fish prefab at selected index is null. Skipping fish " + i);
+                    continue;
+                }
+
+                Vector3 velocity = Random.onUnitSphere;
+                velocity.y *= 0.2f;
+                if (velocity.sqrMagnitude < 0.0001f) velocity = Vector3.forward;
+                velocity = velocity.normalized * habitatFishSwimSpeed;
+
+                GameObject fish = Instantiate(
+                    prefab,
+                    transform.position + GetRandomFishOffset(),
+                    Quaternion.LookRotation(velocity.normalized));
+
+                fish.SetActive(true);
+                fish.transform.SetParent(generatedEnvironmentRoot.transform, true);
+                Debug.Log($"[Habitat] Fish spawned: {fish.name} at position {fish.transform.position}");
+                activeHabitatFish.Add(fish.transform);
+                habitatFishVelocities.Add(velocity);
+            }
+        }
+
+        private void UpdateHabitatFish()
+        {
+            if (activeHabitatFish.Count == 0) return;
+
+            Vector3 center = transform.position + Vector3.up * waterSurfaceLocalOffset.y;
+
+            for (int i = activeHabitatFish.Count - 1; i >= 0; i--)
+            {
+                Transform fish = activeHabitatFish[i];
+                if (fish == null)
+                {
+                    activeHabitatFish.RemoveAt(i);
+                    habitatFishVelocities.RemoveAt(i);
+                    continue;
+                }
+
+                Vector3 velocity = habitatFishVelocities[i];
+                Vector3 offsetFromCenter = fish.position - center;
+
+                if (offsetFromCenter.magnitude > habitatFishSwimRadius)
+                {
+                    Vector3 returnDirection = -offsetFromCenter.normalized;
+                    velocity = Vector3.Lerp(velocity, returnDirection * habitatFishSwimSpeed, Time.deltaTime * 1.6f);
+                }
+
+                velocity += new Vector3(
+                    Mathf.Sin(Time.time * 1.3f + i) * 0.15f,
+                    Mathf.Sin(Time.time * 0.9f + i * 0.7f) * 0.08f,
+                    Mathf.Cos(Time.time * 1.1f + i) * 0.15f) * Time.deltaTime;
+
+                if (habitatFishHeightRange > 0f)
+                {
+                    float verticalOffset = fish.position.y - center.y;
+                    if (Mathf.Abs(verticalOffset) > habitatFishHeightRange)
+                    {
+                        velocity.y = Mathf.Lerp(
+                            velocity.y,
+                            -Mathf.Sign(verticalOffset) * habitatFishSwimSpeed * 0.35f,
+                            Time.deltaTime * 2f);
+                    }
+                }
+
+                velocity = velocity.normalized * habitatFishSwimSpeed;
+                fish.position += velocity * Time.deltaTime;
+
+                if (velocity.sqrMagnitude > 0.0001f)
+                {
+                    fish.rotation = Quaternion.Slerp(fish.rotation, Quaternion.LookRotation(velocity), Time.deltaTime * 4f);
+                }
+
+                habitatFishVelocities[i] = velocity;
+            }
+        }
+
+        private Vector3 GetRandomFishOffset()
+        {
+            Vector2 horizontal = Random.insideUnitCircle * habitatFishSwimRadius;
+            float vertical = habitatFishHeightRange > 0f ? Random.Range(-habitatFishHeightRange, habitatFishHeightRange) : 0f;
+            return new Vector3(horizontal.x, waterSurfaceLocalOffset.y + vertical, horizontal.y);
+        }
+
         private void ApplyEnvironmentMaterialLook(HabitatVisualProfile profile)
         {
             if (environmentRenderers == null) return;
+            if (propertyBlock == null)
+            {
+                propertyBlock = new MaterialPropertyBlock();
+            }
 
             for (int i = 0; i < environmentRenderers.Length; i++)
             {
@@ -427,12 +568,27 @@ namespace ARFishApp.Modules
 
         private void CleanEnvironment()
         {
+            ClearHabitatFish();
             dynamicWaterSurface = null;
             if (generatedEnvironmentRoot != null)
             {
                 Destroy(generatedEnvironmentRoot);
                 generatedEnvironmentRoot = null;
             }
+        }
+
+        private void ClearHabitatFish()
+        {
+            for (int i = 0; i < activeHabitatFish.Count; i++)
+            {
+                if (activeHabitatFish[i] != null)
+                {
+                    Destroy(activeHabitatFish[i].gameObject);
+                }
+            }
+
+            activeHabitatFish.Clear();
+            habitatFishVelocities.Clear();
         }
     }
 

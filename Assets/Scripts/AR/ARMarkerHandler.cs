@@ -16,11 +16,21 @@ namespace ARFishApp.AR
         [Tooltip("The parent GameObject containing the Fish body, Modules, and Audio sources.")]
         public GameObject fishEntityContainer;
 
+        [Tooltip("Keeps the fish container active in the Unity Editor so modules can be tested without an AR marker.")]
+        public bool keepFishVisibleInEditor = true;
+
         private void Awake()
         {
             trackedImageManager = GetComponent<ARTrackedImageManager>();
             if (fishEntityContainer != null)
             {
+#if UNITY_EDITOR
+                if (keepFishVisibleInEditor)
+                {
+                    fishEntityContainer.SetActive(true);
+                    return;
+                }
+#endif
                 fishEntityContainer.SetActive(false); // Hide initially until AR marker is found
             }
         }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 993cd0f4120044f81a6298efdeb6de8a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 168598
+  packageName: King Ultramarine
+  packageVersion: 1.0
+  assetPath: Assets/Scanta/King Ultramarine/AnimatorController/KingUltramarine.controller
+  uploadId: 367647
