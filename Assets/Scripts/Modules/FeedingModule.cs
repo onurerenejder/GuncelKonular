@@ -60,6 +60,7 @@ namespace ARFishApp.Modules
         private readonly List<LineRenderer> chainLines = new List<LineRenderer>();
         private readonly List<GameObject> chainArrowheads = new List<GameObject>();
         private readonly List<EnergyPulseData> energyPulses = new List<EnergyPulseData>();
+        private Font worldLabelFont;
         private int fishNodeIndex = -1;
         private GameObject currentFoodTarget;
 
@@ -298,7 +299,7 @@ namespace ARFishApp.Modules
             text.fontSize = 30;
             text.horizontalOverflow = HorizontalWrapMode.Overflow;
             text.verticalOverflow = VerticalWrapMode.Overflow;
-            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            text.font = GetWorldLabelFont();
 
             // Compact trophic-level hint to make energy hierarchy explicit.
             string levelPrefix = chainIndex == 0 ? "Üretici/Temel" : $"Trofik {chainIndex}";
@@ -319,6 +320,19 @@ namespace ARFishApp.Modules
             if (chainIndex == fishNodeIndex + 1) return "Üst avcı baskısı";
             if (chainIndex < fishNodeIndex) return "Besin kaynağı";
             return "Enerji aktarımı";
+        }
+
+        private Font GetWorldLabelFont()
+        {
+            if (worldLabelFont != null) return worldLabelFont;
+
+            worldLabelFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            if (worldLabelFont == null)
+            {
+                worldLabelFont = Font.CreateDynamicFontFromOSFont("Arial", 30);
+            }
+
+            return worldLabelFont;
         }
 
         private LineRenderer CreateChainLink(Transform root, Vector3 startPosition, Vector3 endPosition)

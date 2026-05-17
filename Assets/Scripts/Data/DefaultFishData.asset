@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a94f686dc0841b39a48c17e70619ca, type: 3}
+  m_Name: DefaultFishData
+  m_EditorClassIdentifier: 
+  FishName: King Ultramarine
+  ScientificName: Chromis viridis
+  GeneralDescription: Renkli resif baliklarini temsil eden varsayilan egitim verisi.
+  HasBones: 1
+  AnatomyDescription: Omurgali balik anatomisi; yuzgecler, solungaclar ve kuyruk hareketiyle yuzmeye uyumludur.
+  HabitatType: Coral Reef
+  EnvironmentalLightColor: {r: 0.72, g: 0.94, b: 1, a: 1}
+  DietDescription: Kucuk organizmalar ve planktonlarla beslenen resif turu temsili.
+  FoodChain:
+  - Fitoplankton
+  - Zooplankton
+  - Kucuk Balik
+  - King Ultramarine
+  - Yirtici Balik
+  Predators:
+  - Yirtici Balik
+  NarrationAudioClip: {fileID: 0}
