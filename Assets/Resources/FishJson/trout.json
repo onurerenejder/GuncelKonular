@@ -1,0 +1,12 @@
+{
+  "id": "trout",
+  "displayName": "Alabalik",
+  "scientificName": "Salmo trutta",
+  "general": "Alabaliklar temiz, oksijence zengin tatli sularda yasayan hassas balik turleridir.",
+  "anatomy": "Akintili sularda dengeyi korumaya yardim eden yuzgeclere ve cevik govde yapisina sahiptir.",
+  "habitat": "Soguk akarsular, dereler ve dag gollerinde bulunur.",
+  "feeding": "Su bocekleri, larvalar, kucuk baliklar ve omurgasizlarla beslenir.",
+  "relations": "Tatli su ekosistemlerinde hem avci hem de av rolundedir.",
+  "predatorPrey": "Kuslara, buyuk baliklara ve memelilere av olabilir.",
+  "quiz": []
+}

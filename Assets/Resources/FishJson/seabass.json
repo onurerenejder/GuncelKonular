@@ -1,0 +1,12 @@
+{
+  "id": "seabass",
+  "displayName": "Levrek",
+  "scientificName": "Dicentrarchus labrax",
+  "general": "Levrek, Akdeniz ve yakin denizlerde yaygin gorulen ekonomik ve ekolojik oneme sahip bir balik turudur.",
+  "anatomy": "Akici govdesi, guclu yuzgecleri ve kemikli iskeletiyle aktif yuzmeye uygundur.",
+  "habitat": "Kiyisal denizlerde, lagunlarda ve bazen nehir agizlarinda yasar.",
+  "feeding": "Kucuk baliklar, karidesler ve yumusakçalarla beslenir.",
+  "relations": "Kiyisal ekosistemlerde orta duzey avci rolu oynar.",
+  "predatorPrey": "Kucuk baliklari avlar; daha buyuk baliklar, deniz memelileri ve insanlar tarafindan avlanabilir.",
+  "quiz": []
+}

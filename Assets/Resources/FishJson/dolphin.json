@@ -1,0 +1,21 @@
+{
+  "id": "dolphin",
+  "displayName": "Yunus",
+  "scientificName": "Delphinidae",
+  "general": "Yunuslar zeki, sosyal ve memeli deniz canlılarıdır. Suyun içinde yön bulmak, avlanmak ve iletişim kurmak için ses dalgalarını kullanırlar.",
+  "anatomy": "Yunusun akıcı gövdesi hızlı yüzmeye uygundur. Sırt yüzgeci denge sağlar, yan yüzgeçler yön değiştirmeye yardım eder. Balık değil memeli olduğu için solungaç yerine akciğerle nefes alır ve nefes deliği başının üstündedir.",
+  "habitat": "Yunuslar çoğunlukla okyanuslarda ve kıyıya yakın sıcak/ılıman denizlerde yaşar. Bazı türler açık denizde, bazıları kıyı şeritlerinde, nehir ağızlarında veya sığ sularda görülür.",
+  "feeding": "Yunuslar küçük balıklar, kalamarlar ve kabuklularla beslenir. Avlarını sürü halinde çevreleyebilir, hızlı manevralarla yakalayabilir ve ekolokasyonla yerini belirleyebilir.",
+  "relations": "Yunuslar genellikle sürü halinde yaşar. Grup içinde iletişim, koruma ve birlikte avlanma davranışları gelişmiştir. Aynı habitatta farklı balık türleri, deniz kaplumbağaları ve diğer deniz memelileriyle karşılaşabilir.",
+  "predatorPrey": "Yunuslar birçok küçük deniz canlısı için avcıdır. Büyük köpek balıkları ve orkalar bazı yunus türleri için tehdit oluşturabilir. Sürü davranışı savunmada önemli rol oynar.",
+  "quiz": [
+    {
+      "question": "Yunuslar su altında yön bulmak için hangi sistemi kullanır?",
+      "answer": "Ekolokasyon"
+    },
+    {
+      "question": "Yunuslar solungaçla mı yoksa akciğerle mi nefes alır?",
+      "answer": "Akciğerle"
+    }
+  ]
+}

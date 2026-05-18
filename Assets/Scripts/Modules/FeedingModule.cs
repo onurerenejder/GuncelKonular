@@ -67,10 +67,11 @@ namespace ARFishApp.Modules
         {
             if (fishData == null)
             {
-                FishEntityController entityController = GetComponent<FishEntityController>();
+                FishEntityController entityController = GetComponentInParent<FishEntityController>();
                 if (entityController != null) fishData = entityController.fishDataConfig;
             }
 
+            FishSelectionManager.OnFishSelected += HandleFishSelected;
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
             OnModuleDeactivated();
         }
@@ -78,7 +79,13 @@ namespace ARFishApp.Modules
         private void OnDestroy()
         {
             ClearFoodChainVisualization();
+            FishSelectionManager.OnFishSelected -= HandleFishSelected;
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
+        }
+
+        private void HandleFishSelected(SelectableFish selectedFish)
+        {
+            fishData = selectedFish != null ? selectedFish.fishData : null;
         }
 
         private void HandleStateChanged(ModuleType newType)
@@ -113,7 +120,7 @@ namespace ARFishApp.Modules
         /// </summary>
         private void LateUpdate()
         {
-            if (SystemStateManager.Instance.CurrentModule == GetModuleType() && currentFoodTarget != null && headBone != null)
+            if (SystemStateManager.Instance != null && SystemStateManager.Instance.CurrentModule == GetModuleType() && currentFoodTarget != null && headBone != null)
             {
                 // Vector geometry to point spine/head bone at the food
                 Vector3 directionToFood = (currentFoodTarget.transform.position - headBone.position).normalized;

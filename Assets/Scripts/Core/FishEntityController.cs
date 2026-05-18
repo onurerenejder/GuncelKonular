@@ -12,6 +12,19 @@ namespace ARFishApp.Core
         [Header("Single Source of Truth Config")]
         public FishData fishDataConfig;
 
+        public void SetFishData(FishData newFishData)
+        {
+            fishDataConfig = newFishData;
+
+            if (fishDataConfig == null)
+            {
+                Debug.LogWarning("[FishEntityController] Active fish data cleared.");
+                return;
+            }
+
+            InitializeArchitecture();
+        }
+
         private void Start()
         {
             if (fishDataConfig == null)

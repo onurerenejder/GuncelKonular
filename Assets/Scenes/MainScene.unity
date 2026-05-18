@@ -565,10 +565,10 @@ RectTransform:
   - {fileID: 900716924}
   m_Father: {fileID: 815437431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &496129347
 MonoBehaviour:
@@ -777,10 +777,10 @@ RectTransform:
   - {fileID: 736695074}
   m_Father: {fileID: 815437431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &618558274
 MonoBehaviour:
@@ -1810,10 +1810,10 @@ RectTransform:
   - {fileID: 1251918358}
   m_Father: {fileID: 815437431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1048570626
 MonoBehaviour:
@@ -1943,10 +1943,10 @@ RectTransform:
   - {fileID: 1722662619}
   m_Father: {fileID: 815437431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1148030722
 MonoBehaviour:
@@ -2405,8 +2405,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4966719baa26e4b0e8231a24d9bd491a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.XR.ARFoundation::UnityEngine.XR.ARFoundation.ARCameraManager
-  m_FocusMode: 1
-  m_LightEstimationMode: 0
+  m_FocusMode: -1
+  m_LightEstimationMode: -1
   m_AutoFocus: 1
   m_ImageStabilization: 0
   m_LightEstimation: 0
@@ -2497,10 +2497,10 @@ RectTransform:
   - {fileID: 5112214}
   m_Father: {fileID: 815437431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1401546559
 MonoBehaviour:
@@ -3000,10 +3000,10 @@ RectTransform:
   - {fileID: 564175501}
   m_Father: {fileID: 815437431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1615227477
 MonoBehaviour:
@@ -3253,6 +3253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1728690008}
   - component: {fileID: 1728690007}
+  - component: {fileID: 1728690009}
   m_Layer: 0
   m_Name: FishEntityContainer
   m_TagString: Untagged
@@ -3298,6 +3299,83 @@ Transform:
   - {fileID: 1868231533}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1728690009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728690006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 667c3acbbd297a84d8467be2c47d06a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARFishApp.Core.FishSelectionManager
+  fishOptions:
+  - id: dolphin
+    displayName: Yunus
+    fishData: {fileID: 0}
+    modelPrefab: {fileID: 8771091787928289351, guid: 7f745dbb85210ab4b8ed58ef21146e35, type: 3}
+    modelEulerOffset: {x: 0, y: 0, z: 0}
+    previewColor: {r: 0.35, g: 0.68, b: 0.95, a: 1}
+  - id: shark
+    displayName: Kopek Baligi
+    fishData: {fileID: 0}
+    modelPrefab: {fileID: -7981514964708312862, guid: 03b6fd69b404fb94fa5494380bc211f4, type: 3}
+    modelEulerOffset: {x: 0, y: 0, z: 0}
+    previewColor: {r: 0.38, g: 0.46, b: 0.52, a: 1}
+  - id: clownfish
+    displayName: "Palya\xE7o Baligi"
+    fishData: {fileID: 0}
+    modelPrefab: {fileID: 0}
+    modelEulerOffset: {x: 0, y: 0, z: 0}
+    previewColor: {r: 1, g: 0.48, b: 0.12, a: 1}
+  - id: seabass
+    displayName: Levrek
+    fishData: {fileID: 0}
+    modelPrefab: {fileID: 0}
+    modelEulerOffset: {x: 0, y: 0, z: 0}
+    previewColor: {r: 0.16, g: 0.58, b: 0.7, a: 1}
+  - id: tuna
+    displayName: Orkinos
+    fishData: {fileID: 0}
+    modelPrefab: {fileID: 0}
+    modelEulerOffset: {x: 0, y: 0, z: 0}
+    previewColor: {r: 0.08, g: 0.32, b: 0.65, a: 1}
+  - id: salmon
+    displayName: Somon
+    fishData: {fileID: 0}
+    modelPrefab: {fileID: 0}
+    modelEulerOffset: {x: 0, y: 0, z: 0}
+    previewColor: {r: 0.95, g: 0.42, b: 0.35, a: 1}
+  - id: trout
+    displayName: Alabalik
+    fishData: {fileID: 0}
+    modelPrefab: {fileID: 0}
+    modelEulerOffset: {x: 0, y: 0, z: 0}
+    previewColor: {r: 0.38, g: 0.62, b: 0.35, a: 1}
+  - id: ray
+    displayName: Vatoz
+    fishData: {fileID: 0}
+    modelPrefab: {fileID: 0}
+    modelEulerOffset: {x: 0, y: 0, z: 0}
+    previewColor: {r: 0.62, g: 0.48, b: 0.34, a: 1}
+  defaultFishIndex: 0
+  modelRoot: {fileID: 0}
+  modelLocalPosition: {x: 0, y: 0.2, z: 0}
+  modelLocalEulerAngles: {x: 0, y: 180, z: 0}
+  modelLocalScale: {x: 1, y: 1, z: 1}
+  autoFitModelToView: 1
+  targetModelSize: 1.15
+  hideExistingPlaceholderMesh: 1
+  rotateSelectedModel: 1
+  rotationSpeed: 18
+  addSwimMotion: 1
+  placeInFrontOfEditorCamera: 1
+  editorPreviewDistance: 2.25
+  addUnderwaterPreviewEnvironment: 1
+  createSelectionUI: 1
+  targetCanvas: {fileID: 0}
 --- !u!1 &1799141408
 GameObject:
   m_ObjectHideFlags: 0

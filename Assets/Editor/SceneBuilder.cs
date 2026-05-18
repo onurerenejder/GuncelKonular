@@ -78,6 +78,7 @@ namespace ARFishApp.Editor
             // FishEntityController + FishData ScriptableObject
             var fishController = fishContainerGO.AddComponent<FishEntityController>();
             fishController.fishDataConfig = GetOrCreateFishData();
+            fishContainerGO.AddComponent<FishSelectionManager>();
 
             // ── 5. MODÜLLER ────────────────────────────────────────────────
             var anatomyGO = new GameObject("AnatomyModule");

@@ -1,0 +1,12 @@
+{
+  "id": "tuna",
+  "displayName": "Orkinos",
+  "scientificName": "Thunnini",
+  "general": "Orkinoslar hizli ve guclu yuzuculerdir. Acik deniz ekosistemlerinde onemli avcilardir.",
+  "anatomy": "Aerodinamik govde, guclu kuyruk ve yuksek dayanıklilik uzun mesafe yuzmeye yardim eder.",
+  "habitat": "Acik okyanuslarda ve sicak/iliman denizlerde genis alanlarda dolasir.",
+  "feeding": "Kucuk baliklar, kalamarlar ve kabuklularla beslenir.",
+  "relations": "Besin zincirinde ust-orta duzey avci olarak rol oynar.",
+  "predatorPrey": "Kucuk deniz canlilarini avlar; buyuk kopek baliklari ve insanlar tarafindan avlanabilir.",
+  "quiz": []
+}

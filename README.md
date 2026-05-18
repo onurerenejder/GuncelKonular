@@ -189,6 +189,17 @@ Kodu derlemek ve çalıştırmak için sisteminizde kurulu olması gerekenler:
 * Android Build Support veya iOS Build Support eklentileri.
 * AR özelliklerine sahip fiziksel bir test cihazı (Android için ARCore / iOS için ARKit destekli).
 
+### İlk Hedef: 8 Balığı Seçip 3D Görmek
+Bu aşamada modül içeriklerinden önce sahnede aktif balığı seçip 3D olarak görmek hedeflenir.
+
+1. `Assets/Scenes/MainScene.unity` sahnesini açın.
+2. Play'e basın.
+3. Üstte gelen balık seçim butonlarından bir balık seçin.
+4. Seçilen balık sahnede 3D model olarak görünür. Gerçek model prefab'ı atanmadıysa sistem geçici 3D balık formu üretir.
+5. Gerçek `.fbx`, `.glb` veya `.obj` model geldiğinde `FishSelectionManager > Fish Options > Model Prefab` alanına atanır.
+
+Mevcut `Anatomi`, `Habitat`, `Beslenme`, `Türler`, `Av/Avcı`, `Quiz` butonları modül geçişleri için korunur. Sonraki adımda bu modüller seçili balığın JSON/ScriptableObject verisine bağlanacaktır.
+
 ---
 
 ## 📱 Kullanım (Usage)

@@ -21,6 +21,7 @@ namespace ARFishApp.Modules
         [Header("X-Ray Compute Architecture")]
         public Renderer skinRenderer;
         public GameObject skeletonModel;
+        public bool showSkeletonModel;
         public List<OrganSystem> biologicalSystems;
         
         [Tooltip("Direct GPU Instruction pass for boolean occlusion.")]
@@ -67,7 +68,7 @@ namespace ARFishApp.Modules
             if (activeScanRoutine != null) StopCoroutine(activeScanRoutine);
             activeScanRoutine = StartCoroutine(ProceduralBiologicalScan(true));
             
-            if (skeletonModel != null)
+            if (showSkeletonModel && skeletonModel != null)
             {
                 skeletonModel.SetActive(true);
                 StartCoroutine(ExecuteBonesSkeletalAssembly());

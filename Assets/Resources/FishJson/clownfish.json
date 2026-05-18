@@ -1,0 +1,12 @@
+{
+  "id": "clownfish",
+  "displayName": "Palyaco Baligi",
+  "scientificName": "Amphiprioninae",
+  "general": "Palyaco baliklari parlak renkleri ve deniz anemonlariyla kurduklari ortak yasam iliskisiyle bilinir.",
+  "anatomy": "Kucuk govdeli, parlak turuncu-beyaz desenli ve resif ortaminda kivrak hareket edebilen bir balik turudur.",
+  "habitat": "Mercan resiflerinde, ozellikle deniz anemonlarinin yakininda yasar.",
+  "feeding": "Algler, planktonlar ve kucuk omurgasizlarla beslenir.",
+  "relations": "Deniz anemonlariyla mutualist iliski kurar; anemon koruma saglar, balik da anemona besin artiklari ve temizlik destegi verir.",
+  "predatorPrey": "Kucuk avcilar icin hedef olabilir; anemonlar arasinda saklanarak korunur.",
+  "quiz": []
+}
