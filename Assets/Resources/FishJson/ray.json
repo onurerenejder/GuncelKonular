@@ -1,0 +1,12 @@
+{
+  "id": "ray",
+  "displayName": "Vatoz",
+  "scientificName": "Batoidea",
+  "general": "Vatozlar yassi govdeleriyle deniz tabanina yakin yasayan kikirdakli balik grubudur.",
+  "anatomy": "Genis yassi govde, kanat benzeri gogus yuzgecleri ve dipte yasamaya uygun agiz yapisi vardir.",
+  "habitat": "Kumlu veya camurlu deniz tabanlarinda, resif yakinlarinda ve sig kiyisal sularda bulunabilir.",
+  "feeding": "Kabuklular, yumusakcalar ve dipte yasayan kucuk canlilarla beslenir.",
+  "relations": "Deniz tabani ekosisteminde besin arama davranisiyla tortuyu hareketlendirir.",
+  "predatorPrey": "Buyuk kopek baliklari ve bazi deniz memelileri tarafindan avlanabilir.",
+  "quiz": []
+}

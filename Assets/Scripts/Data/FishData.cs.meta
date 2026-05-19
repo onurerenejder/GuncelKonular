@@ -1,2 +1,16 @@
 fileFormatVersion: 2
 guid: 94a94f686dc0841b39a48c17e70619ca
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - AnatomyAudioClip: {fileID: 8300000, guid: 039db172b4c2e6a4190fb12a711fe9f4, type: 3}
+  - HabitatAudioClip: {instanceID: 0}
+  - FeedingAudioClip: {instanceID: 0}
+  - InterspeciesAudioClip: {instanceID: 0}
+  - PredatorPreyAudioClip: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

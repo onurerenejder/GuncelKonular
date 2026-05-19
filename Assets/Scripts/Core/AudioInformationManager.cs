@@ -10,13 +10,6 @@ namespace ARFishApp.Core
         private AudioSource secondarySource; 
         private bool usePrimary = true;
         
-        [Header("Audio Tracks")]
-        public AudioClip anatomyClip;
-        public AudioClip habitatClip;
-        public AudioClip feedingClip;
-        public AudioClip interspeciesClip;
-        public AudioClip predatorPreyClip;
-
         [Header("FFT Real-Time Spectrum Hardware Analysis")]
         [Tooltip("If true, mathematically analyzes soundwaves (Fast Fourier Transform) to drive UI or shaders globally over static AudioAmplitude.")]
         public bool enableAudioReactivity = true;
@@ -29,6 +22,16 @@ namespace ARFishApp.Core
         
         // Cache for FFT execution
         private float[] spectrumData = new float[256];
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void InitializeAutomatically()
+        {
+            // Sahne baslamadan once otomatik olarak bir obje olusturup bu scripti ekler.
+            var go = new GameObject("AudioInformationManager");
+            go.AddComponent<AudioInformationManager>();
+            DontDestroyOnLoad(go); // Sahneler arasi geciste silinmemesi icin
+            Debug.Log("[AudioInformationManager] Automatically created and added to the scene at runtime.");
+        }
 
         private void Awake()
         {
@@ -50,20 +53,63 @@ namespace ARFishApp.Core
 
         private void PlayNarrationForState(ModuleType newType)
         {
+            Debug.Log($"[AudioInformationManager] PlayNarrationForState called for Module: {newType}");
             AudioClip clipToPlay = null;
-            switch (newType)
+            
+            // Try to get dynamic clip from FishData or Resources
+            var activeFish = FishSelectionManager.Instance?.CurrentFish;
+            if (activeFish != null)
             {
-                case ModuleType.Anatomy: clipToPlay = anatomyClip; break;
-                case ModuleType.Habitat: clipToPlay = habitatClip; break;
-                case ModuleType.Feeding: clipToPlay = feedingClip; break;
-                case ModuleType.InterspeciesRelations: clipToPlay = interspeciesClip; break;
-                case ModuleType.PredatorPrey: clipToPlay = predatorPreyClip; break;
+                Debug.Log($"[AudioInformationManager] Active fish found: {activeFish.id}");
+                var data = activeFish.fishData;
+                if (data != null)
+                {
+                    Debug.Log($"[AudioInformationManager] FishData found for {activeFish.id}");
+                    switch (newType)
+                    {
+                        case ModuleType.Anatomy: clipToPlay = data.AnatomyAudioClip; break;
+                        case ModuleType.Habitat: clipToPlay = data.HabitatAudioClip; break;
+                        case ModuleType.Feeding: clipToPlay = data.FeedingAudioClip; break;
+                        case ModuleType.InterspeciesRelations: clipToPlay = data.InterspeciesAudioClip; break;
+                        case ModuleType.PredatorPrey: clipToPlay = data.PredatorPreyAudioClip; break;
+                    }
+                    Debug.Log($"[AudioInformationManager] Clip from FishData after switch: {(clipToPlay != null ? clipToPlay.name : "null")}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[AudioInformationManager] activeFish.fishData is null!");
+                }
+
+                // Fallback to Resources if not manually assigned in ScriptableObject
+                if (clipToPlay == null)
+                {
+                    string resourcePath = $"Audio/{activeFish.id}/{newType.ToString()}";
+                    Debug.Log($"[AudioInformationManager] Attempting to load from Resources at path: {resourcePath}");
+                    clipToPlay = Resources.Load<AudioClip>(resourcePath);
+                    if (clipToPlay != null)
+                    {
+                        Debug.Log($"[AudioInformationManager] Loaded audio dynamically from Resources: {resourcePath}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[AudioInformationManager] Failed to load audio from Resources: {resourcePath}");
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"[AudioInformationManager] FishSelectionManager.Instance?.CurrentFish is null!");
             }
 
             if (clipToPlay != null)
             {
+                Debug.Log($"[AudioInformationManager] Starting CrossfadeAudioSequence with clip: {clipToPlay.name}");
                 StopAllCoroutines();
                 StartCoroutine(CrossfadeAudioSequence(clipToPlay));
+            }
+            else
+            {
+                Debug.LogWarning($"[AudioInformationManager] No audio clip found for module {newType} on fish {activeFish?.id}");
             }
         }
 

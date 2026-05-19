@@ -1,0 +1,12 @@
+{
+  "id": "shark",
+  "displayName": "Kopek Baligi",
+  "scientificName": "Selachimorpha",
+  "general": "Kopek baliklari guclu duyu sistemleri ve hizli yuzme yetenekleriyle taninan yirtici balik grubudur.",
+  "anatomy": "Kikirdakli iskelete, keskin dislere, guclu kuyruk yuzgecine ve su icindeki titresimleri algilayan hassas duyu organlarina sahiptir.",
+  "habitat": "Okyanuslarda, kiyisal sularda, resiflerde ve acik denizde farkli turleri bulunur.",
+  "feeding": "Baliklar, foklar, kalamarlar ve cesitli deniz canlilariyla beslenebilir. Beslenme turu kopek baligi turune gore degisir.",
+  "relations": "Ekosistemde ust duzey avci rolu oynar ve deniz popülasyonlarinin dengede kalmasina katkida bulunur.",
+  "predatorPrey": "Birçok canli icin avci konumundadir. Genc bireyler daha buyuk kopek baliklari veya orkalar tarafindan tehdit edilebilir.",
+  "quiz": []
+}

@@ -1,0 +1,12 @@
+{
+  "id": "salmon",
+  "displayName": "Somon",
+  "scientificName": "Salmonidae",
+  "general": "Somonlar yasam dongulerinde tatli su ve deniz ortamlarini kullanabilen gocmen baliklar olarak bilinir.",
+  "anatomy": "Goc etmeye uygun guclu yuzgeclere ve akintiya karsi yuzmeye yardim eden kasli govdeye sahiptir.",
+  "habitat": "Yavrular tatli sularda, ergin bireyler denizde yasayabilir; ureme icin tekrar nehirlere donebilir.",
+  "feeding": "Plankton, kucuk baliklar ve omurgasizlarla beslenir.",
+  "relations": "Nehir ve deniz ekosistemleri arasinda besin ve enerji tasinmasinda rol oynar.",
+  "predatorPrey": "Kuslar, ayilar, buyuk baliklar ve insanlar tarafindan avlanabilir.",
+  "quiz": []
+}
