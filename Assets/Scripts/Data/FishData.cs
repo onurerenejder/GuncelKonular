@@ -28,7 +28,11 @@ namespace ARFishApp.Data
         public string[] FoodChain;
         public string[] Predators;
         
-        [Header("Audio")]
-        public AudioClip NarrationAudioClip;
+        [Header("Audio (Narration)")]
+        public AudioClip AnatomyAudioClip;
+        public AudioClip HabitatAudioClip;
+        public AudioClip FeedingAudioClip;
+        public AudioClip InterspeciesAudioClip;
+        public AudioClip PredatorPreyAudioClip;
     }
 }
