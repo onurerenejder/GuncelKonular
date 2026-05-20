@@ -1118,6 +1118,120 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736695073}
   m_CullTransparentMesh: 1
+--- !u!1 &742952424
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 742952428}
+  - component: {fileID: 742952427}
+  - component: {fileID: 742952426}
+  - component: {fileID: 742952425}
+  m_Layer: 0
+  m_Name: FishMesh_Placeholder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &742952425
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742952424}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &742952426
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742952424}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &742952427
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742952424}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &742952428
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742952424}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.3, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1728690008}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &783713453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,7 +1312,7 @@ MonoBehaviour:
   chasePacingSpeed: 3.8
   aiCollisionAvoidanceWeight: 2
   neuralVisionAngleCone: 90
-  preySkinRenderer: {fileID: 0}
+  preySkinRenderer: {fileID: 742952425}
   camouflageEnvironmentTone: {r: 0.6, g: 0.5, b: 0.4, a: 1}
   inkOpticJammerParticle: {fileID: 0}
 --- !u!1 &794436441
@@ -2003,12 +2117,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2eb2cccc8bd44ab6b64aa00b62bfa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ARFishApp.Modules.AnatomyModule
-  skinRenderer: {fileID: 0}
+  skinRenderer: {fileID: 742952425}
   skeletonModel: {fileID: 794436441}
-  showSkeletonModel: 0
   biologicalSystems:
   - systemName: "Solunga\xE7lar"
-    organRenderer: {fileID: 0}
+    organRenderer: {fileID: 742952425}
     isPulsating: 1
     pulseRate: 0.8
     pulseMagnitude: 0.04
@@ -3174,6 +3287,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 742952428}
   - {fileID: 794436445}
   - {fileID: 1192612255}
   - {fileID: 2083393674}
@@ -3202,49 +3316,41 @@ MonoBehaviour:
     displayName: Yunus
     fishData: {fileID: 0}
     modelPrefab: {fileID: 8771091787928289351, guid: 7f745dbb85210ab4b8ed58ef21146e35, type: 3}
-    modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 0.35, g: 0.68, b: 0.95, a: 1}
   - id: shark
     displayName: Kopek Baligi
     fishData: {fileID: 0}
-    modelPrefab: {fileID: -7981514964708312862, guid: 03b6fd69b404fb94fa5494380bc211f4, type: 3}
-    modelEulerOffset: {x: 0, y: 0, z: 0}
+    modelPrefab: {fileID: 0}
     previewColor: {r: 0.38, g: 0.46, b: 0.52, a: 1}
   - id: clownfish
     displayName: "Palya\xE7o Baligi"
     fishData: {fileID: 0}
     modelPrefab: {fileID: 0}
-    modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 1, g: 0.48, b: 0.12, a: 1}
   - id: seabass
     displayName: Levrek
     fishData: {fileID: 0}
     modelPrefab: {fileID: 0}
-    modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 0.16, g: 0.58, b: 0.7, a: 1}
   - id: tuna
     displayName: Orkinos
     fishData: {fileID: 0}
     modelPrefab: {fileID: 0}
-    modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 0.08, g: 0.32, b: 0.65, a: 1}
   - id: salmon
     displayName: Somon
     fishData: {fileID: 0}
     modelPrefab: {fileID: 0}
-    modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 0.95, g: 0.42, b: 0.35, a: 1}
   - id: trout
     displayName: Alabalik
     fishData: {fileID: 0}
     modelPrefab: {fileID: 0}
-    modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 0.38, g: 0.62, b: 0.35, a: 1}
   - id: ray
     displayName: Vatoz
     fishData: {fileID: 0}
     modelPrefab: {fileID: 0}
-    modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 0.62, g: 0.48, b: 0.34, a: 1}
   defaultFishIndex: 0
   modelRoot: {fileID: 0}
