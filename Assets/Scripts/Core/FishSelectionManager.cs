@@ -196,6 +196,8 @@ namespace ARFishApp.Core
             {
                 case "shark":
                     return eulerAngles + new Vector3(0f, -90f, 0f);
+                case "trout":
+                    return eulerAngles + new Vector3(0f, 180f, 0f);
                 default:
                     return eulerAngles;
             }
