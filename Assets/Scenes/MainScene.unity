@@ -3328,13 +3328,13 @@ MonoBehaviour:
   - id: clownfish
     displayName: "Palya\xE7o Baligi"
     fishData: {fileID: 0}
-    modelPrefab: {fileID: 0}
+    modelPrefab: {fileID: 919132149155446097, guid: 15c3aed8d39587545b8db72cd27c4cb6, type: 3}
     modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 1, g: 0.48, b: 0.12, a: 1}
   - id: seabass
     displayName: Levrek
     fishData: {fileID: 0}
-    modelPrefab: {fileID: 0}
+    modelPrefab: {fileID: 8771091787928289351, guid: bcfc79eb9673c8c4baac21a6b37b381b, type: 3}
     modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 0.16, g: 0.58, b: 0.7, a: 1}
   - id: tuna
@@ -3352,13 +3352,13 @@ MonoBehaviour:
   - id: trout
     displayName: Alabalik
     fishData: {fileID: 0}
-    modelPrefab: {fileID: 0}
+    modelPrefab: {fileID: 919132149155446097, guid: 44319645914b4ad4dbed08ba469bc661, type: 3}
     modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 0.38, g: 0.62, b: 0.35, a: 1}
   - id: ray
     displayName: Vatoz
     fishData: {fileID: 0}
-    modelPrefab: {fileID: 0}
+    modelPrefab: {fileID: 8771091787928289351, guid: 62f8c943a9566004eafbe056aeaf2673, type: 3}
     modelEulerOffset: {x: 0, y: 0, z: 0}
     previewColor: {r: 0.62, g: 0.48, b: 0.34, a: 1}
   defaultFishIndex: 0
