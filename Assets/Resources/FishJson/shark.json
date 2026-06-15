@@ -8,5 +8,22 @@
   "feeding": "Baliklar, foklar, kalamarlar ve cesitli deniz canlilariyla beslenebilir. Beslenme turu kopek baligi turune gore degisir.",
   "relations": "Ekosistemde ust duzey avci rolu oynar ve deniz popülasyonlarinin dengede kalmasina katkida bulunur.",
   "predatorPrey": "Birçok canli icin avci konumundadir. Genc bireyler daha buyuk kopek baliklari veya orkalar tarafindan tehdit edilebilir.",
-  "quiz": []
+  "quiz": [
+    {
+      "question": "Kopek baliklarinin iskeleti kemikten mi yoksa kikirdaktan mi olusur?",
+      "answer": "Kikirdaktan olusur"
+    },
+    {
+      "question": "Kopek baliklari ekosistemde hangi rolu oynar?",
+      "answer": "Ust duzey avci rolu oynar"
+    },
+    {
+      "question": "Kopek baliklari su icindeki titresimleri neyle algilar?",
+      "answer": "Hassas duyu organlariyla"
+    },
+    {
+      "question": "Genc kopek baliklari hangi canlilar tarafindan tehdit edilebilir?",
+      "answer": "Daha buyuk kopek baliklari veya orkalar tarafindan"
+    }
+  ]
 }

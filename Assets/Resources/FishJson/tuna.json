@@ -1,12 +1,29 @@
 {
   "id": "tuna",
   "displayName": "Orkinos",
-  "scientificName": "Thunnini",
-  "general": "Orkinoslar hizli ve guclu yuzuculerdir. Acik deniz ekosistemlerinde onemli avcilardir.",
-  "anatomy": "Aerodinamik govde, guclu kuyruk ve yuksek dayanıklilik uzun mesafe yuzmeye yardim eder.",
-  "habitat": "Acik okyanuslarda ve sicak/iliman denizlerde genis alanlarda dolasir.",
-  "feeding": "Kucuk baliklar, kalamarlar ve kabuklularla beslenir.",
-  "relations": "Besin zincirinde ust-orta duzey avci olarak rol oynar.",
-  "predatorPrey": "Kucuk deniz canlilarini avlar; buyuk kopek baliklari ve insanlar tarafindan avlanabilir.",
-  "quiz": []
+  "scientificName": "Thunnus thynnus",
+  "general": "Orkinos, açık okyanuslarda saatte 70 km'ye ulaşabilen hızıyla denizlerin en hızlı balıklarından biridir. Büyük Atlantik orkinos bireyler 3 metreyi ve 680 kg'ı geçebilir. Hem ticari balıkçılık hem ekoloji açısından kritik bir türdür.",
+  "anatomy": "Torpido biçimindeki aerodinamik gövdesi su direncini minimize eder. Ay biçimli (lunate) kuyruk yüzgeci son derece güçlüdür. Diğer balıkların aksine kısmi endotermidir; yani kas ısısını çevresinden yüksek tutabilir ve bu sayede soğuk sularda da aktif kalır. Solungaçları yüksek oksijen alımına göre optimize edilmiştir.",
+  "habitat": "Açık okyanuslar ve mezopelagik bölgelerde (200-1000 m) yaşar. Ilık ve tropik sularda daha aktiftir. Geniş göç rotalarına sahiptir; Atlantik orkinosu Akdeniz ile Atlas Okyanusu arasında mevsimlik göç yapar.",
+  "feeding": "Küçük balıklar (ringa, hamsi), kalamar ve karides başta olmak üzere hızlı ve aktif avlama stratejisi izler. Sürü halinde avlanır; avı köşeye sıkıştırıp koordineli saldırı düzenler.",
+  "relations": "Besin zincirinde üst sırada yer alır. Büyük göç grupları ekosistem içinde besin transferinin önemli bir parçasıdır. Genç bireyler, diğer büyük balıklarla birlikte sürü oluşturarak yırtıcılardan korunur.",
+  "predatorPrey": "Büyük mavi köpekbalığı, makul köpekbalıkları ve orkalar için av konumundadır. Yoğun ticari avlanma küresel orkinos popülasyonunu tehdit altına almıştır. CITES ile koruma altındadır.",
+  "quiz": [
+    {
+      "question": "Orkinos diğer balıklardan farklı olarak ne yapabilir?",
+      "answer": "Vücut ısısını çevresinden yüksek tutabilir (kısmi endotermi)"
+    },
+    {
+      "question": "Orkinosun kuyruk yüzgecinin şekli nasıldır?",
+      "answer": "Ay biçiminde (lunate)"
+    },
+    {
+      "question": "Büyük Atlantik orkinosu en fazla kaç kg'a ulaşabilir?",
+      "answer": "680 kg"
+    },
+    {
+      "question": "Orkinos avlanırken hangi stratejiyi kullanır?",
+      "answer": "Sürü halinde koordineli saldırı"
+    }
+  ]
 }

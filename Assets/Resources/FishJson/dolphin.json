@@ -16,6 +16,14 @@
     {
       "question": "Yunuslar solungaçla mı yoksa akciğerle mi nefes alır?",
       "answer": "Akciğerle"
+    },
+    {
+      "question": "Yunuslarda nefes alma açıklığı vücudun hangi bölümündedir?",
+      "answer": "Başının üstündeki nefes deliğinde"
+    },
+    {
+      "question": "Yunuslar avlanırken neden sürü davranışından yararlanır?",
+      "answer": "Avlarını çevrelemek ve birlikte yakalamak için"
     }
   ]
 }

@@ -1,12 +1,29 @@
 {
   "id": "salmon",
   "displayName": "Somon",
-  "scientificName": "Salmonidae",
-  "general": "Somonlar yasam dongulerinde tatli su ve deniz ortamlarini kullanabilen gocmen baliklar olarak bilinir.",
-  "anatomy": "Goc etmeye uygun guclu yuzgeclere ve akintiya karsi yuzmeye yardim eden kasli govdeye sahiptir.",
-  "habitat": "Yavrular tatli sularda, ergin bireyler denizde yasayabilir; ureme icin tekrar nehirlere donebilir.",
-  "feeding": "Plankton, kucuk baliklar ve omurgasizlarla beslenir.",
-  "relations": "Nehir ve deniz ekosistemleri arasinda besin ve enerji tasinmasinda rol oynar.",
-  "predatorPrey": "Kuslar, ayilar, buyuk baliklar ve insanlar tarafindan avlanabilir.",
-  "quiz": []
+  "scientificName": "Salmo salar",
+  "general": "Somon, yaşam döngüsünün farklı evrelerinde hem tatlı su hem de deniz ortamına uyum sağlayan anadrom bir balıktır. Doğduğu nehre geri dönme (homing) içgüdüsüyle tanınır ve ekosistemler arası besin köprüsü işlevi görür.",
+  "anatomy": "Güçlü ve akıcı gövdesi, akıntıya karşı yüzme ve uzun mesafe göçe uygundur. Yumurtlama döneminde erkeklerin çenesi kanca şeklinde (kype) uzar ve rengi kırmızıya döner. Yağ depolarına ve güçlü kas kitlesine sahiptir. Yan çizgi sistemi akıntı ve engelleri algılar.",
+  "habitat": "Yumurtlama için soğuk, temiz, oksijence zengin nehirleri tercih eder. Yavru döneminden sonra denize göç eder; Atlantik ve Pasifik'in soğuk-ılıman sularında beslenir. Yetişkin olunca doğduğu nehre geri döner.",
+  "feeding": "Genç bireyler nehirlerde böcek, larva ve küçük omurgasızlarla beslenir. Deniz döneminde karides, kalamar ve küçük balıkları avlar. Yumurtlama göçü sırasında beslenmeyi büyük ölçüde bırakır; enerjiyi yağ depolarından karşılar.",
+  "relations": "Nehir ve deniz ekosistemleri arasında kritik bir enerji ve besin taşıyıcısıdır. Özellikle Pasifik somonu yumurtlama sonrası ölür; gövdesi nehir tabanına zengin besin sağlar, çevredeki ağaçları ve omurgasızları besler.",
+  "predatorPrey": "Denizde orkalar, büyük köpekbalıkları ve yunuslar için av konumundadır. Nehirlerde ayılar, kartallar, kunduzlar ve insanlar tarafından yoğun avlanır. Yumurtlama döneminde hareket kapasitesi düştüğünden en savunmasız halindedir.",
+  "quiz": [
+    {
+      "question": "Somon hangi içgüdüyle doğduğu nehre geri döner?",
+      "answer": "Homing içgüdüsü"
+    },
+    {
+      "question": "Yumurtlama döneminde erkek somonun çenesine ne olur?",
+      "answer": "Kanca şeklinde (kype) uzar"
+    },
+    {
+      "question": "Somon yumurtlama göçünde enerjiyi nereden sağlar?",
+      "answer": "Yağ depolarından"
+    },
+    {
+      "question": "Somon ekosistemler arası ne taşır?",
+      "answer": "Besin ve enerji (denizden nehre)"
+    }
+  ]
 }

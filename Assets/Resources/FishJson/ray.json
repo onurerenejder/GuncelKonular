@@ -2,11 +2,28 @@
   "id": "ray",
   "displayName": "Vatoz",
   "scientificName": "Batoidea",
-  "general": "Vatozlar yassi govdeleriyle deniz tabanina yakin yasayan kikirdakli balik grubudur.",
-  "anatomy": "Genis yassi govde, kanat benzeri gogus yuzgecleri ve dipte yasamaya uygun agiz yapisi vardir.",
-  "habitat": "Kumlu veya camurlu deniz tabanlarinda, resif yakinlarinda ve sig kiyisal sularda bulunabilir.",
-  "feeding": "Kabuklular, yumusakcalar ve dipte yasayan kucuk canlilarla beslenir.",
-  "relations": "Deniz tabani ekosisteminde besin arama davranisiyla tortuyu hareketlendirir.",
-  "predatorPrey": "Buyuk kopek baliklari ve bazi deniz memelileri tarafindan avlanabilir.",
-  "quiz": []
+  "general": "Vatozlar, köpekbalıklarıyla akraba olan kıkırdaklı balıklardır. Yassı, disk biçimli gövdeleri ve kanat gibi geniş göğüs yüzgeçleriyle deniz tabanına yakın yaşamaya evrilmişlerdir. Bazı türler zehirli kuyruklarıyla savunma yapar.",
+  "anatomy": "Vücut dorsoventralde (üstten alta) yassılaşmış ve disk şeklindedir. Ağız ve solungaçlar karın tarafında bulunur. Gözler sırtın üstündedir; görüş alanı geniştir. Kıkırdaklı iskelet hafiflik sağlar. Göğüs yüzgeçleri geniş \"kanat\" yapıda olup yüzmeyi sağlar. Uzun ve ince kuyruğun bazı türlerde zehirli dikeni bulunur.",
+  "habitat": "Kumlu veya çamurlu sığ deniz tabanında, mercan resifleri çevresinde ve kıyısal sularda yaşar. Bazı türler tatlı su nehirlerine kadar girebilir. Çoğunlukla 1-100 m derinlikte bulunur; bazı derin deniz türleri de mevcuttur.",
+  "feeding": "Tabanda yaşayan kabuklular, yumuşakçalar (istiridye, deniz tarağı) ve küçük balıkları avlar. Kuvvetli çene kasları ile sert kabukları ezer. Avını kumun altından çıkarmak için hareket hissi ve elektromanyetik algı kullanır.",
+  "relations": "Deniz tabanı ekosisteminde önemli rol oynar. Beslenerek taban tortusunu karıştırır, besin döngüsüne katkı sağlar. Temizleyici balıklar (cleaner fish) vatozun parazitlerini temizleyebilir. Deniz tabanı canlı çeşitliliği için dolaylı destekleyicidir.",
+  "predatorPrey": "Büyük köpekbalıkları (hammerhead, tiger shark) ve orkalar için av konumundadır. Zehirli dikeni savunma amaçlıdır; kuma gömülme hareketi kamuflaj görevi görür. İnsan tarafından kazara basıldığında batmasıyla tehlikeli olabilir.",
+  "quiz": [
+    {
+      "question": "Vatozun ağzı ve solungaçları nerede bulunur?",
+      "answer": "Karın tarafında"
+    },
+    {
+      "question": "Vatoz av ararken hangi algı sistemini kullanır?",
+      "answer": "Elektromanyetik algı ve hareket hissi"
+    },
+    {
+      "question": "Vatozun geniş göğüs yüzgeçlerinin görevi nedir?",
+      "answer": "Yüzme (uçma hareketi gibi)"
+    },
+    {
+      "question": "Vatozun doğal avcıları hangileridir?",
+      "answer": "Büyük köpekbalıkları ve orkalar"
+    }
+  ]
 }

@@ -1,12 +1,29 @@
 {
   "id": "trout",
-  "displayName": "Alabalik",
+  "displayName": "Alabalık",
   "scientificName": "Salmo trutta",
-  "general": "Alabaliklar temiz, oksijence zengin tatli sularda yasayan hassas balik turleridir.",
-  "anatomy": "Akintili sularda dengeyi korumaya yardim eden yuzgeclere ve cevik govde yapisina sahiptir.",
-  "habitat": "Soguk akarsular, dereler ve dag gollerinde bulunur.",
-  "feeding": "Su bocekleri, larvalar, kucuk baliklar ve omurgasizlarla beslenir.",
-  "relations": "Tatli su ekosistemlerinde hem avci hem de av rolundedir.",
-  "predatorPrey": "Kuslara, buyuk baliklara ve memelilere av olabilir.",
-  "quiz": []
+  "general": "Alabalık, soğuk ve temiz akan sularda yaşayan, su kalitesinin biyoindikatörü sayılan bir tatlı su balığıdır. Hızlı akıntılara uyum sağlamış gövdesiyle hem doğal hem kültür balıkçılığında önemli bir türdür.",
+  "anatomy": "Akıcı, torpido biçiminde bir gövdesi vardır. Üst yüzeyindeki kırmızımsı-turuncu noktalı deseniyle kolayca tanınır. Adipoz yüzgeci (sırt ile kuyruk arasındaki küçük etyüzgeç) Salmonidae ailesinin karakteristik özelliğidir. Güçlü ve esnek kas yapısı, akıntıya karşı yüzmeyi mümkün kılar.",
+  "habitat": "Soğuk, oksijence zengin, hızlı akarsular, dere ve dağ göllerinde bulunur. 18°C üzerindeki su sıcaklıklarına uzun süre dayanamaz. Türkiye'de Karadeniz havzası, Doğu Anadolu nehirleri ve dağ derelerinde yaygındır.",
+  "feeding": "Büyük ölçüde böcekler ve larvaları (su sineği, mayıs sineği), küçük kabuklular, solucanlar ve küçük balıklarla beslenir. Yüzey böceklerini avlamak için sıçrama yapabilir. Sinek balıkçılığının (fly fishing) temel hedefidir.",
+  "relations": "Tatlı su besin zincirinde orta düzey avcıdır. Hem omurgasız popülasyonlarını dengeler hem de kendi büyük yırtıcılar için av konumundadır. Su kalitesinin bozulmasından ilk etkilenen türlerden biridir; bu nedenle ekolojik gösterge (indikator) türdür.",
+  "predatorPrey": "Balıkçıl kuşlar (karabatak, balıkçıl), su samuru, iri nehir balıkları ve insanlar tarafından avlanır. Genç bireyler daha büyük alabalıklar tarafından da yenebilir. Kışın donuk sularda predatör baskısı azalır.",
+  "quiz": [
+    {
+      "question": "Alabalığın Salmonidae ailesine özgü küçük yüzgecinin adı nedir?",
+      "answer": "Adipoz yüzgeç"
+    },
+    {
+      "question": "Alabalık hangi su sıcaklığına dayanamaz?",
+      "answer": "18°C üzeri"
+    },
+    {
+      "question": "Alabalık neden ekolojik gösterge (indikatör) tür sayılır?",
+      "answer": "Su kalitesinin bozulmasından ilk etkilenen tür olduğu için"
+    },
+    {
+      "question": "Sinek balıkçılığının (fly fishing) temel hedef türü hangisidir?",
+      "answer": "Alabalık"
+    }
+  ]
 }

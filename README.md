@@ -96,15 +96,31 @@ Balıkların ortak yaşam alanları, simbiyoz ve grup davranışları aracılı�
 Besin zincirini ve hayatta kalma mücadelelerini görselleştirerek balıkları ekosistem dinamiklerinin aktif katılımcıları olarak tasvir eder.
 
 ### 6. Sesli Bilgi Modülü (Audio Information Module)
-Eğitim deneyimini daha zengin ve erişilebilir kılmak için diğer tüm modülleri sözlü açıklamalarla destekler.
+Eğitim deneyimini daha zengin ve erişilebilir kılmak için diğer tüm modülleri sözlü açıklamalarla destekler. FFT tabanlı ses reaktivitesi ve modüller arası crossfade anlatım içerir.
+
+### 7. Quiz Modülü (Quiz Module)
+Kullanıcıların anatomik bilgilerini test etmelerini sağlayan etkileşimli soru-cevap deneyimi sunar. Zaman bazlı puanlama algoritması, ilerleme göstergesi ve sonuç ekranı içerir.
+
+### 8. Ağ Modülü (Network Module)
+Photon PUN2 altyapısıyla öğretmenlerin sınıf genelinde modül geçişlerini yönetmesine olanak tanıyan çok kullanıcılı eğitim senaryolarını destekler.
+
+### 9. Portal Modülü (Portal Module)
+Balığın doğal yaşam ortamına interaktif geçiş deneyimi sağlar. Algılama mantığı aktiftir.
 
 ### Mevcut Modül Durumu (Current Module Snapshot)
 Geçerli geliştirme aşamasında modüllerimizin teknik olgunluk (maturity) seviyeleri şu şekildedir:
-* **Anatomy Module:** `Güçlü v1`. Dış görünüm, iskelet, iç organlar ve X-Ray katmanları aktiftir; 3D obje etkileşimi production (canlı ortam) kalitesinde çalışmaktadır.
-* **Habitat Module:** `Orta Seviye v1`. Gerçek zamanlı parçacık efektleri (particles) ve ortam aydınlatması aktiftir. Dinamik su simülasyonu bir sonraki faza planlanmıştır.
-* **Feeding Module:** `Tamamlanmış v1`. Balık beslenme animasyonları ve besin zinciri akışı render edilmektedir.
-* **Ecosystem / Predator-Prey Module:** `Erken v1`. Besin zinciri görselleştiricisi devrede ancak aynı habitatta çoklu balık sürü simülasyonu (Boids algorithm) performans optimizasyonundadır.
-* **Audio Information:** `Tamamlanmış v1`. Ses oynatma ve AR sahne geçişleri arasındaki senkronizasyon tamamlanmıştır.
+
+| Modül | Durum | Notlar |
+|-------|-------|--------|
+| **Anatomy Module** | Tam (v1) | Dış görünüm, iskelet, iç organlar, X-Ray katmanları; HotspotNode tıklama etkileşimi çalışıyor |
+| **Habitat Module** | Tam (v1) | DynamicWaterSurface 3-katmanlı dalga simülasyonu (ripple/swell/turbulence), parçacık efektleri, ortam aydınlatması aktif |
+| **Feeding Module** | Tam (v1) | Beslenme animasyonları, besin zinciri akışı, FishData entegrasyonu tamamlanmış |
+| **Interspecies Module** | Kısmi (v1) | Boids sürü simülasyonu çalışıyor (O(n²)); mobil performans optimizasyonu gerekli |
+| **Predator-Prey Module** | Kısmi (v1) | Besin zinciri görselleştiricisi aktif; object pooling henüz uygulanmamış |
+| **Quiz Module** | Tam (v1) | HotspotNode event bağlantısı, zaman bazlı puanlama, sonuç ekranı; EnsureQuizUI() runtime UI oluşturma eklenmiş |
+| **Audio Information Module** | Tam (v1) | FFT (BlackmanHarris) reaktivite, her modül için çapraz-geçiş ses anlatımı; Quiz ve Portal ses haritalaması dahil |
+| **Network Module** | Tam (v1) | Photon PUN2 RPC, öğretmen→öğrenci yayın, late-join senkronizasyon, rol ayrımı çalışıyor |
+| **Portal Module** | Kısmi (v1) | Algılama mantığı aktif; vortex/shimmer görsel efekti ve ses mufling henüz eklenmemiş |
 
 ---
 
@@ -173,9 +189,12 @@ Platformun ölçeklenebilirliği için şu mimari standartlar benimsenmiştir:
 
 ## 🛠️ Kullanılan Teknolojiler (Technology Stack)
 
-* **Oyun Motoru:** Unity (örn. 2022.3 LTS)
+* **Oyun Motoru:** Unity 2022.3 LTS
 * **Programlama Dili:** C#
-* **AR Altyapısı:** AR Foundation (ARCore & ARKit) / Vuforia
+* **AR Altyapısı:** AR Foundation (ARCore & ARKit)
+* **Çok Kullanıcılı Ağ:** Photon PUN2
+* **İçerik Veritabanı:** ScriptableObject (FishData) + JSON (FishJsonDatabase)
+* **Ses İşleme:** AudioInformationManager — FFT (BlackmanHarris) reaktivite + crossfade
 * **3D Modelleme ve Animasyon:** Blender / Maya
 * **UI/UX Tasarım:** Figma
 
@@ -189,16 +208,16 @@ Kodu derlemek ve çalıştırmak için sisteminizde kurulu olması gerekenler:
 * Android Build Support veya iOS Build Support eklentileri.
 * AR özelliklerine sahip fiziksel bir test cihazı (Android için ARCore / iOS için ARKit destekli).
 
-### İlk Hedef: 8 Balığı Seçip 3D Görmek
-Bu aşamada modül içeriklerinden önce sahnede aktif balığı seçip 3D olarak görmek hedeflenir.
+### 8 Balıkla Başlamak
+
+Uygulama 8 balık türünü destekler: Köpekbalığı (shark), Palyaço Balığı (clownfish), Levrek (seabass), Orkinos (tuna), Somon (salmon), Alabalık (trout), Vatoz (ray), Yunus (dolphin).
 
 1. `Assets/Scenes/MainScene.unity` sahnesini açın.
 2. Play'e basın.
 3. Üstte gelen balık seçim butonlarından bir balık seçin.
-4. Seçilen balık sahnede 3D model olarak görünür. Gerçek model prefab'ı atanmadıysa sistem geçici 3D balık formu üretir.
-5. Gerçek `.fbx`, `.glb` veya `.obj` model geldiğinde `FishSelectionManager > Fish Options > Model Prefab` alanına atanır.
-
-Mevcut `Anatomi`, `Habitat`, `Beslenme`, `Türler`, `Av/Avcı`, `Quiz` butonları modül geçişleri için korunur. Sonraki adımda bu modüller seçili balığın JSON/ScriptableObject verisine bağlanacaktır.
+4. Seçilen balığın JSON içeriği `Assets/Resources/FishJson/<id>.json` dosyasından otomatik yüklenir.
+5. Modül butonlarına (Anatomi, Habitat, Beslenme, Türler, Av/Avcı, Quiz) basarak içerik katmanları arasında geçiş yapın.
+6. Gerçek `.fbx` / `.glb` model geldiğinde `FishSelectionManager > Fish Options > Model Prefab` alanına atanır.
 
 ---
 

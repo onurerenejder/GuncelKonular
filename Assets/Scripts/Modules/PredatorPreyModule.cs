@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 using ARFishApp.Core;
 
 namespace ARFishApp.Modules
@@ -22,15 +24,22 @@ namespace ARFishApp.Modules
         private Color standardOriginalSkinTheme;
         private bool isEvadingEngaged = false;
 
+        private SimplePool _predatorPool;
+        private SimplePool _jammerPool;
+
         private void Start()
         {
             if (preySkinRenderer != null) standardOriginalSkinTheme = preySkinRenderer.material.color;
+            if (apexPredatorPrefab != null) _predatorPool = new SimplePool(apexPredatorPrefab, transform, 1);
+            if (inkOpticJammerParticle != null) _jammerPool = new SimplePool(inkOpticJammerParticle, transform, 2);
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
             OnModuleDeactivated();
         }
 
         private void OnDestroy()
         {
+            if (_predatorPool != null) _predatorPool.Dispose();
+            if (_jammerPool != null) _jammerPool.Dispose();
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
         }
 
@@ -44,17 +53,23 @@ namespace ARFishApp.Modules
 
         public void OnModuleActivated()
         {
-            if (apexPredatorPrefab != null && generatedApexPredator == null)
+            if (_predatorPool != null && generatedApexPredator == null)
             {
-                // Ambush placement coordinate geometry calculations
                 Vector3 ambushCoordinatePlane = transform.position + (transform.right * 4.5f) + (transform.up * 1f);
-                generatedApexPredator = Instantiate(apexPredatorPrefab, ambushCoordinatePlane, Quaternion.LookRotation(transform.position - ambushCoordinatePlane));
+                generatedApexPredator = _predatorPool.Get(ambushCoordinatePlane, Quaternion.LookRotation(transform.position - ambushCoordinatePlane));
             }
         }
 
         public void OnModuleDeactivated()
         {
-            if (generatedApexPredator != null) Destroy(generatedApexPredator);
+            if (generatedApexPredator != null)
+            {
+                if (_predatorPool != null)
+                    _predatorPool.Return(generatedApexPredator);
+                else
+                    Destroy(generatedApexPredator);
+                generatedApexPredator = null;
+            }
             if (preySkinRenderer != null) preySkinRenderer.material.color = standardOriginalSkinTheme;
             isEvadingEngaged = false;
         }
@@ -116,13 +131,66 @@ namespace ARFishApp.Modules
         {
             isEvadingEngaged = true;
             Debug.Log("[Stealth AI Sub-System] Apex entity breached proximity defenses! Engaging Adaptive Coloration matrix & Jet Emission.");
-            
+
             if (preySkinRenderer != null) preySkinRenderer.material.color = camouflageEnvironmentTone;
 
-            if (inkOpticJammerParticle != null)
+            if (_jammerPool != null)
             {
-                GameObject opticalJammerEntity = Instantiate(inkOpticJammerParticle, transform.position, Quaternion.identity);
-                Destroy(opticalJammerEntity, 3.5f);
+                GameObject jammer = _jammerPool.Get(transform.position, Quaternion.identity);
+                StartCoroutine(ReturnToPoolAfter(jammer, _jammerPool, 3.5f));
+            }
+        }
+
+        private IEnumerator ReturnToPoolAfter(GameObject go, SimplePool pool, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            pool.Return(go);
+        }
+
+        private sealed class SimplePool
+        {
+            private readonly Stack<GameObject> _stack = new Stack<GameObject>();
+            private readonly GameObject _prefab;
+            private readonly Transform _parent;
+
+            public SimplePool(GameObject prefab, Transform parent, int warmCount = 1)
+            {
+                _prefab = prefab;
+                _parent = parent;
+                for (int i = 0; i < warmCount; i++)
+                    _stack.Push(CreateInstance());
+            }
+
+            public GameObject Get(Vector3 pos, Quaternion rot)
+            {
+                GameObject go = _stack.Count > 0 ? _stack.Pop() : CreateInstance();
+                go.transform.SetPositionAndRotation(pos, rot);
+                go.SetActive(true);
+                return go;
+            }
+
+            public void Return(GameObject go)
+            {
+                if (go == null) return;
+                go.SetActive(false);
+                go.transform.SetParent(_parent, false);
+                _stack.Push(go);
+            }
+
+            public void Dispose()
+            {
+                while (_stack.Count > 0)
+                {
+                    GameObject go = _stack.Pop();
+                    if (go != null) Object.Destroy(go);
+                }
+            }
+
+            private GameObject CreateInstance()
+            {
+                GameObject go = Object.Instantiate(_prefab, _parent);
+                go.SetActive(false);
+                return go;
             }
         }
     }

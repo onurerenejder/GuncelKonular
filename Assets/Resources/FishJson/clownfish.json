@@ -1,12 +1,29 @@
 {
   "id": "clownfish",
-  "displayName": "Palyaco Baligi",
+  "displayName": "Palyaço Balığı",
   "scientificName": "Amphiprioninae",
-  "general": "Palyaco baliklari parlak renkleri ve deniz anemonlariyla kurduklari ortak yasam iliskisiyle bilinir.",
-  "anatomy": "Kucuk govdeli, parlak turuncu-beyaz desenli ve resif ortaminda kivrak hareket edebilen bir balik turudur.",
-  "habitat": "Mercan resiflerinde, ozellikle deniz anemonlarinin yakininda yasar.",
-  "feeding": "Algler, planktonlar ve kucuk omurgasizlarla beslenir.",
-  "relations": "Deniz anemonlariyla mutualist iliski kurar; anemon koruma saglar, balik da anemona besin artiklari ve temizlik destegi verir.",
-  "predatorPrey": "Kucuk avcilar icin hedef olabilir; anemonlar arasinda saklanarak korunur.",
-  "quiz": []
+  "general": "Palyaço balığı, canlı turuncu-beyaz rengiyle tanınan ve mercan resiflerinin simgesi haline gelmiş küçük bir deniz balığıdır. Zehirli dokunaçlara sahip anemonlarla kurduğu simbiyotik ilişkiyle bilinir.",
+  "anatomy": "Küçük ve oval gövdeli, canlı turuncu zemininde beyaz çizgilerle kaplanmış parlak renkli bir balıktır. Yüzgecleri güçlü ve hareketlidir. Derisi, anemon zehrine karşı koruyucu özel bir mukus tabakasıyla kaplıdır. Bu mukus, anemonun dokunaçlarının nematosistlerini harekete geçirmez.",
+  "habitat": "Hint-Pasifik Okyanusu'nun sıcak sularındaki sığ mercan resiflerinde yaşar. Her zaman bir anemona bağlıdır; anemon olmadan açık su predatörlerine karşı savunmasız kalır. Çoğunlukla 1-12 m derinlikte bulunur.",
+  "feeding": "Küçük kabuklular, plankton, yosun ve anemonun artıklarıyla beslenir. Hemçinsleri arasında toprak savunması yapar, bölgesine giren küçük organizmaları anemonun dokunaçlarına yönlendirebilir.",
+  "relations": "Anemonla mutualizm ilişkisi içindedir: palyaço balığı anemon için zararlı parazitleri temizler, ziyaretçileri uzaklaştırır; karşılığında anemon koruyucu bir yuva sağlar. Grup içinde dominant dişi ve tek erkek bulunur; dişi ölürse erkek cinsiyet değiştirir.",
+  "predatorPrey": "Küçük boyutları nedeniyle büyük resif balıkları, yılanbalıkları ve deniz kırlangıçları için av konumundadır. Anemon bölgesini terk ettiğinde risk çok artar. Savunması büyük ölçüde anemon korumasına dayanır.",
+  "quiz": [
+    {
+      "question": "Palyaço balığı anemon dokunaçlarından nasıl korunur?",
+      "answer": "Özel mukus tabakasıyla"
+    },
+    {
+      "question": "Palyaço balığı ile anemon arasındaki ilişki türü nedir?",
+      "answer": "Mutualizm"
+    },
+    {
+      "question": "Palyaço balığı grubunda dişi ölürse ne olur?",
+      "answer": "Baskın erkek dişiye dönüşür"
+    },
+    {
+      "question": "Palyaço balığı hangi derinliklerde bulunur?",
+      "answer": "1-12 metre"
+    }
+  ]
 }

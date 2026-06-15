@@ -27,6 +27,11 @@ namespace ARFishApp.Data
         [Tooltip("Food chain order from producer/prey to apex predator.")]
         public string[] FoodChain;
         public string[] Predators;
+
+        [Header("Module Descriptions")]
+        [TextArea] public string InterspeciesDescription;
+        [TextArea] public string PredatorPreyDescription;
+        [TextArea] public string PortalDescription;
         
         [Header("Audio (Narration)")]
         public AudioClip AnatomyAudioClip;

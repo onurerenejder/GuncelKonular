@@ -1,38 +1,91 @@
-# 🗂️ Kalan Tasklar ve Faz Planı (15 Task)
+# Kalan Tasklar ve Faz Planı — Güncel Kod Durumu
 
-Bu doküman yalnızca kalan 15 task'ı içerir ve Trello'ya kart olarak girilecek şekilde düzenlenmiştir.
+> Son güncelleme: 15 Haziran 2026
+> ✅ = Tamamlandı | 🔶 = Kısmen yapılmış | ❌ = Henüz yapılmadı
 
-## Faz 1 - Çekirdek Entegrasyon
-- [x] `QuizModule ile HotspotNode Event Bağlantılarını Tamamla`
-- [x] `FishData Verisini UI ve Modüllere Gerçekten Bind Et`
-- [x] `ARMarkerHandler İçinde Instance Null Güvenlik Kontrollerini Güçlendir`
+---
 
-## Faz 2 - Girdi ve Etkileşim
-- [x] `OnMouseDown Yerine Mobil Uyumlu Touch + AR Raycast Input Sistemi Kur`
-- [ ] `Null Reference ve Hatalı Prefab Atamaları İçin Runtime Guard Katmanı Ekle` - Kısmi: AR/UI/Quiz tarafı güçlendirildi, tüm prefab/modül atamaları için merkezi guard hâlâ yok.
-- [x] `Audio Manager'a Quiz ve Portal İçin Ses Haritalaması Ekle`
+## Yapılacaklar (Öncelik Sırasına Göre)
 
-## Faz 3 - Ekosistem ve Performans
-- [x] `Habitat Modülü için Dinamik Su Simülasyonunu Uygula`
-- [ ] `Boids Sürü Simülasyonunda Mobil Performans Optimizasyonu Yap` - Eksik: Boids/sürü simülasyonu kodu görünmüyor.
-- [ ] `Cihaz Üzerinde Profiling ve FPS/Batarya Testlerini Planla ve Uygula` - Eksik: profiling/test planı veya sonuç dosyası yok.
+### Yüksek Öncelik
 
-## Faz 4 - Network ve Test
-- [ ] `Photon PUN Entegrasyonunu Aktifleştir ve RPC Akışını Tamamla` - Kısmi: RPC kodu `PUN_2_OR_NEWER` ile hazır, Photon PUN paketi manifest'te yok.
-- [ ] `Play Mode Test Senaryolarını Yaz (State Geçişleri ve Modül Yaşam Döngüsü)` - Eksik: test klasörü/senaryosu bulunmuyor.
-- [ ] `ScriptableObject İçeriklerini Tür Bazında Doldur (Anatomi/Habitat/Beslenme)` - Kısmi: `FishData` alanları var, tür bazlı dolu ScriptableObject seti görünmüyor.
+| # | Task | Neden Önemli |
+|---|------|-------------|
+| 1 | Ses dosyalarını FishData SO'ya bağla | 8 balık için `Resources/Audio/<id>/` altındaki klipleri Inspector'dan ScriptableObject'e atamak gerekiyor; olmadan tüm ses anlatımı sessiz çalışıyor |
+| 2 | Boids O(n²) → Spatial Hashing veya Unity Jobs | `InterspeciesRelationsModule`'daki döngü her kare tüm balıkları karşılaştırıyor; 10+ balıkta mobilde FPS düşer |
+| 3 | FoodChain[] SO alanlarını elle doldur | JSON'larda `predatorPrey` metni var ama FishData.FoodChain[] dizisi boş; besin zinciri görselleştiricisi fallback etikete düşüyor |
 
-## Faz 5 - Dokümantasyon ve Yayın
-- [ ] `Ecosystem/Predator-Prey Yapısını Kod-Doküman Açısından Tutarlı Hale Getir` - Eksik: README hâlâ bazı eski modül durumlarını söylüyor.
-- [ ] `README'yi Güncel Kod Durumuna Göre Revize Et (Quiz/Portal dahil)` - Eksik: Quiz/Portal ve dinamik su durumu güncel değil.
-- [ ] `Build/Release Checklist Dokümanını Oluştur (Android/iOS)` - Eksik: ayrı checklist dokümanı bulunmuyor.
+### Orta Öncelik
 
-## Öncelikli Detaylandırılmış Tasklar (Ek)
-- [x] `Habitat modülüne dinamik su simülasyonu eklenmesi` - `DynamicWaterSurface` ve `HabitatModule` entegrasyonu eklendi.
-- [ ] `Predator-Prey modülündeki hata ve eksiklerin tamamlanması` - Kısmi: avcı takibi/kaçış davranışı var, modül hâlâ veri ve test açısından tamamlanmış sayılmıyor.
-- [x] `Feeding modülüne gerçek besin zinciri görselleştirmesi eklenmesi`
-- [x] `FishData veri yapısının genişletilmesi`
-- [x] `FishEntityController veri bağlama sisteminin tamamlanması`
-- [ ] `Quiz sistemi için gerçek UI ve skor ekranı yapılması` - Mantık var, oyuncu ekranı eksik.
-- [x] `Hotspot ile quiz entegrasyonunun tamamlanması`
-- [ ] `Photon/network öğretmen-öğrenci senkronizasyonunun aktif hale getirilmesi` - Kod iskeleti var, canlı entegrasyon kapalı.
+| # | Task | Neden Önemli |
+|---|------|-------------|
+| 4 | Play Mode testleri (Unity Test Framework) | Modül geçişleri ve state makinesinin doğru çalıştığını otomatik doğrulamak için; şu an manuel test gerekiyor |
+| 5 | Model/texture yükleme hata recovery | `Resources.Load` başarısız olduğunda sessiz crash riski var; fallback görsel veya kullanıcı mesajı eksik |
+| 6 | DynamicWaterSurface `[ExecuteAlways]` düzeltmesi | Editor'de sahne değişkenken vertex hesaplamaları çalışıyor; modül pasifken durdurulmalı |
+
+### Düşük Öncelik
+
+| # | Task | Notlar |
+|---|------|--------|
+| 7 | Quiz skoru PlayerPrefs ile kayıt | Oturum kapanınca skor sıfırlanıyor; kalıcı ilerleme takibi yok |
+| 8 | FFT görsel EQ bar | `AudioInformationManager.AudioAmplitude` hesaplanıyor ama UI'da hiçbir görsel reaktivite yok |
+| 9 | Portal görsel efekti | Algılama mantığı aktif; vortex/shimmer shader ve ses mufling eksik |
+| 10 | Ses altyazısı (accessibility) | Her anlatım sesi için ekranda metin gösterimi; erişilebilirlik gereksinimi |
+
+---
+
+## Tamamlananlar
+
+### Kod Değişiklikleri
+
+- ✅ **Object Pooling — FeedingModule** — `SimplePool` iç sınıfı eklendi; `meatPreyPrefab` / `vegetationPrefab` ve `hitBloodMuzzle` / `hitAlgaeMuzzle` için `Instantiate`/`Destroy` yerine havuzlu `Get`/`Return`; `ReturnParticleToPool` coroutine ile partikül iadesi
+- ✅ **Object Pooling — PredatorPreyModule** — `SimplePool` eklendi; `generatedApexPredator` ve `inkOpticJammerParticle` havuzlandı; `ReturnToPoolAfter(3.5f)` coroutine
+- ✅ **QuizModule UI — runtime oluşturma** — `EnsureQuizUI()` ile Inspector bağımlılığı kaldırıldı; Canvas üzerinde quiz paneli, soru/skor/ilerleme etiketleri ve sonuç ekranı start'ta otomatik yaratılıyor
+- ✅ **FishJsonDatabase hata toleransı** — JSON parse hatalarını sessiz çökmeden yakalamak için `try-catch (ArgumentException)` eklendi
+- ✅ **FishData yeni alanlar** — `InterspeciesDescription`, `PredatorPreyDescription`, `PortalDescription` alanları eklendi
+
+### JSON İçerikleri (8 Balık)
+
+- ✅ **shark.json** — kıkırdak iskelet, elektro-almaç, 4 quiz sorusu
+- ✅ **clownfish.json** — mukus tabakası, mutualizm, cinsiyet değişimi, 4 quiz sorusu
+- ✅ **seabass.json** — 2 sırt yüzgeci, okyanus-kıyı adaptasyonu, 4 quiz sorusu
+- ✅ **tuna.json** — kısmi endotermi, lunate kuyruk, sürü avı, 4 quiz sorusu
+- ✅ **salmon.json** — homing içgüdüsü, kype, yağ depoları, 4 quiz sorusu
+- ✅ **trout.json** — adipoz yüzgeç, 18°C eşiği, indikatör tür, 4 quiz sorusu
+- ✅ **ray.json** — karın-ağzı, elektromanyetik algı, kanat yüzgeç, 4 quiz sorusu
+- ✅ **dolphin.json** — ekolokasyon, akciğer, zaten doluydu
+
+### Dokümanlar
+
+- ✅ **docs/SWOT.pdf** — Gerçek kod analizine göre güçlü/zayıf yönler, fırsatlar, tehditler
+- ✅ **docs/Requirements.pdf** — FR-01..FR-10 fonksiyonel gereksinimler + 6 NFR grubu
+- ✅ **docs/RAMS.pdf** — Güvenilirlik, Erişilebilirlik, Bakım, Güvenlik risk matrisleri
+- ✅ **docs/THS_report.pdf** — 7 TAM / 2 KISMI modül tablosu, hata tolerans matrisi HT-01..HT-10, performans metrikleri
+- ✅ **docs/UserScenario.pdf** — 5 kullanıcı senaryosu (öğrenci, öğretmen, bireysel, akvaryum, geliştirici)
+- ✅ **docs/Build_Release_Checklist.md** — Android/iOS derleme, imzalama, cihaz testi, performans kontrol listesi
+- ✅ **docs/Trello_link.txt** — `https://trello.com/b/eJzzLIqG/guncelk`
+- ✅ **README.md revize** — 9 modül durum tablosu, Photon PUN2 / FishJsonDatabase teknoloji yığını, güncel "Başlarken" bölümü
+
+### Mevcut Kod (Baştan Doğrulandı)
+
+- ✅ HotspotInputController — touch + AR raycast input
+- ✅ DynamicWaterSurface — 3 katmanlı dalga (ripple / swell / turbulence)
+- ✅ NetworkStateManager — Photon PUN2 RPC, öğretmen→öğrenci broadcast, late-join sync
+- ✅ AudioInformationManager — FFT reaktivite, modül başına crossfade anlatım, Quiz/Portal ses haritalaması
+- ✅ ARMarkerHandler — null güvenlik kontrolleri mevcut
+- ✅ QuizModule — HotspotNode event bağlantısı, zaman bazlı puanlama, sonuç ekranı
+
+---
+
+## Hızlı Referans — Önemli Dosya Yolları
+
+| Bileşen | Dosya |
+|---------|-------|
+| Balık JSON içerikleri | `Assets/Resources/FishJson/<id>.json` |
+| Balık ScriptableObject | `Assets/Scripts/Data/FishData.cs` |
+| Sistem durum makinesi | `Assets/Scripts/Core/SystemStateManager.cs` |
+| Quiz modülü | `Assets/Scripts/Modules/QuizModule.cs` |
+| Beslenme modülü (pool'lu) | `Assets/Scripts/Modules/FeedingModule.cs` |
+| Av-Avcı modülü (pool'lu) | `Assets/Scripts/Modules/PredatorPreyModule.cs` |
+| Ağ yöneticisi | `Assets/Scripts/Network/NetworkStateManager.cs` |
+| Build kontrol listesi | `docs/Build_Release_Checklist.md` |

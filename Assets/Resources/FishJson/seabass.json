@@ -2,11 +2,28 @@
   "id": "seabass",
   "displayName": "Levrek",
   "scientificName": "Dicentrarchus labrax",
-  "general": "Levrek, Akdeniz ve yakin denizlerde yaygin gorulen ekonomik ve ekolojik oneme sahip bir balik turudur.",
-  "anatomy": "Akici govdesi, guclu yuzgecleri ve kemikli iskeletiyle aktif yuzmeye uygundur.",
-  "habitat": "Kiyisal denizlerde, lagunlarda ve bazen nehir agizlarinda yasar.",
-  "feeding": "Kucuk baliklar, karidesler ve yumusakçalarla beslenir.",
-  "relations": "Kiyisal ekosistemlerde orta duzey avci rolu oynar.",
-  "predatorPrey": "Kucuk baliklari avlar; daha buyuk baliklar, deniz memelileri ve insanlar tarafindan avlanabilir.",
-  "quiz": []
+  "general": "Levrek, Akdeniz ve Karadeniz başta olmak üzere Avrupa kıyılarında yaygın görülen, hem ekolojik hem ekonomik açıdan önemli bir balık türüdür. Hızlı yüzme kabiliyeti ve adaptasyon gücüyle kıyısal ekosistemlerin kilit türlerinden biridir.",
+  "anatomy": "Akıcı ve uzun gövdeli, gümüşi rengiyle kolayca tanınır. İki ayrı sırt yüzgeci bulunur; öndeki dikenli, arkadaki yumuşak ışınlıdır. Yan çizgi sistemi su hareketlerini algılar. Ağzı geniş ve dişlidir. Kemikli iskelet yapısı ve güçlü kas sistemi hızlı manevraya olanak tanır.",
+  "habitat": "Kıyısal sığ sularda, haliçlerde, kayalık kıyılarda ve lagünlerde yaşar. Tuzluluk değişimlerine toleranslı olduğundan acı sulara ve hatta nehir ağızlarına kadar girebilir. Gündüz derin sularda, geceleri ise sığlıklarda avlanır.",
+  "feeding": "Küçük balıklar, karidesleri, ahtapot ve mürekkepbalıkları ile küçük omurgasızları avlar. Tek ya da küçük gruplar halinde avlanır; pusu kurarak ya da aktif kovalayarak avını yakalar.",
+  "relations": "Kıyısal ekosistemde orta-üst düzey avcıdır. Küçük balık ve omurgasız popülasyonlarını dengede tutar. Genç bireyler daha büyük predatörlerden kaçmak için sürü davranışı gösterebilir.",
+  "predatorPrey": "Yunuslar, büyük köpekbalıkları ve deniz kuşları için av konumundadır. Sığ sularda balıkçılar tarafından yoğun avlanır. Genç bireyler daha fazla tehdit altındadır.",
+  "quiz": [
+    {
+      "question": "Levreğin kaç sırt yüzgeci vardır?",
+      "answer": "İki"
+    },
+    {
+      "question": "Levrek hangi sulara girebilir?",
+      "answer": "Tuzlu, acı ve tatlı sular"
+    },
+    {
+      "question": "Levrek genellikle ne zaman avlanır?",
+      "answer": "Geceleri sığ sularda"
+    },
+    {
+      "question": "Levreği doğada en çok tehdit eden canlı hangisidir?",
+      "answer": "Yunuslar ve büyük köpekbalıkları"
+    }
+  ]
 }

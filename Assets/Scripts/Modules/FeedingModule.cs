@@ -63,6 +63,11 @@ namespace ARFishApp.Modules
         private int fishNodeIndex = -1;
         private GameObject currentFoodTarget;
 
+        private SimplePool _meatPool;
+        private SimplePool _vegetationPool;
+        private SimplePool _bloodPool;
+        private SimplePool _algaePool;
+
         private void Start()
         {
             if (fishData == null)
@@ -71,6 +76,7 @@ namespace ARFishApp.Modules
                 if (entityController != null) fishData = entityController.fishDataConfig;
             }
 
+            InitializePools();
             FishSelectionManager.OnFishSelected += HandleFishSelected;
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
             OnModuleDeactivated();
@@ -78,6 +84,11 @@ namespace ARFishApp.Modules
 
         private void OnDestroy()
         {
+            if (_meatPool != null) _meatPool.Dispose();
+            if (_vegetationPool != null) _vegetationPool.Dispose();
+            if (_bloodPool != null) _bloodPool.Dispose();
+            if (_algaePool != null) _algaePool.Dispose();
+
             ClearFoodChainVisualization();
             FishSelectionManager.OnFishSelected -= HandleFishSelected;
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
@@ -105,7 +116,7 @@ namespace ARFishApp.Modules
 
         public void OnModuleDeactivated()
         {
-            if (currentFoodTarget != null) Destroy(currentFoodTarget);
+            ReturnFoodToPool();
             if (jawAnimator != null) jawAnimator.SetBool("IsBiting", false);
 
             // Release IK overrides mathematically
@@ -142,10 +153,10 @@ namespace ARFishApp.Modules
             // Calculate a completely randomized spawn zone within the fish's vision
             Vector3 spawnPoint = transform.position + (transform.forward * 2.0f) + (transform.right * Random.Range(-0.8f, 0.8f));
 
-            if (fishDiet == DietType.Carnivore && meatPreyPrefab != null)
-                currentFoodTarget = Instantiate(meatPreyPrefab, spawnPoint, Quaternion.identity);
-            else if (fishDiet == DietType.Herbivore && vegetationPrefab != null)
-                currentFoodTarget = Instantiate(vegetationPrefab, spawnPoint, Quaternion.identity);
+            if (fishDiet == DietType.Carnivore && _meatPool != null)
+                currentFoodTarget = _meatPool.Get(spawnPoint, Quaternion.identity);
+            else if (fishDiet == DietType.Herbivore && _vegetationPool != null)
+                currentFoodTarget = _vegetationPool.Get(spawnPoint, Quaternion.identity);
 
             // Wait 1.5 seconds, specifically allowing the IK math to bend the fish toward the food
             yield return new WaitForSeconds(1.5f);
@@ -166,12 +177,25 @@ namespace ARFishApp.Modules
             // Cleanup & Digestion phase
             if (currentFoodTarget != null)
             {
-                Destroy(currentFoodTarget);
+                ReturnFoodToPool();
 
-                if (fishDiet == DietType.Carnivore && hitBloodMuzzle != null)
-                    Instantiate(hitBloodMuzzle, mouthSocket.position, Quaternion.identity).Play();
-                else if (fishDiet == DietType.Herbivore && hitAlgaeMuzzle != null)
-                    Instantiate(hitAlgaeMuzzle, mouthSocket.position, Quaternion.identity).Play();
+                if (mouthSocket != null)
+                {
+                    if (fishDiet == DietType.Carnivore && _bloodPool != null)
+                    {
+                        GameObject bloodGo = _bloodPool.Get(mouthSocket.position, Quaternion.identity);
+                        ParticleSystem bps = bloodGo.GetComponent<ParticleSystem>();
+                        if (bps != null) bps.Play();
+                        StartCoroutine(ReturnParticleToPool(bloodGo, _bloodPool));
+                    }
+                    else if (fishDiet == DietType.Herbivore && _algaePool != null)
+                    {
+                        GameObject algaeGo = _algaePool.Get(mouthSocket.position, Quaternion.identity);
+                        ParticleSystem aps = algaeGo.GetComponent<ParticleSystem>();
+                        if (aps != null) aps.Play();
+                        StartCoroutine(ReturnParticleToPool(algaeGo, _algaePool));
+                    }
+                }
             }
 
             yield return new WaitForSeconds(0.4f);
@@ -474,6 +498,33 @@ namespace ARFishApp.Modules
             }
         }
 
+        private void InitializePools()
+        {
+            if (meatPreyPrefab != null) _meatPool = new SimplePool(meatPreyPrefab, transform);
+            if (vegetationPrefab != null) _vegetationPool = new SimplePool(vegetationPrefab, transform);
+            if (hitBloodMuzzle != null) _bloodPool = new SimplePool(hitBloodMuzzle.gameObject, transform, 2);
+            if (hitAlgaeMuzzle != null) _algaePool = new SimplePool(hitAlgaeMuzzle.gameObject, transform, 2);
+        }
+
+        private void ReturnFoodToPool()
+        {
+            if (currentFoodTarget == null) return;
+            if (fishDiet == DietType.Carnivore && _meatPool != null)
+                _meatPool.Return(currentFoodTarget);
+            else if (fishDiet == DietType.Herbivore && _vegetationPool != null)
+                _vegetationPool.Return(currentFoodTarget);
+            else
+                Destroy(currentFoodTarget);
+            currentFoodTarget = null;
+        }
+
+        private IEnumerator ReturnParticleToPool(GameObject particleGo, SimplePool pool)
+        {
+            ParticleSystem ps = particleGo.GetComponent<ParticleSystem>();
+            if (ps != null) yield return new WaitWhile(() => ps.IsAlive(true));
+            pool.Return(particleGo);
+        }
+
         private void ClearFoodChainVisualization()
         {
             for (int i = 0; i < chainNodes.Count; i++)
@@ -502,6 +553,53 @@ namespace ARFishApp.Modules
             chainArrowheads.Clear();
             energyPulses.Clear();
             fishNodeIndex = -1;
+        }
+
+        private sealed class SimplePool
+        {
+            private readonly Stack<GameObject> _stack = new Stack<GameObject>();
+            private readonly GameObject _prefab;
+            private readonly Transform _parent;
+
+            public SimplePool(GameObject prefab, Transform parent, int warmCount = 1)
+            {
+                _prefab = prefab;
+                _parent = parent;
+                for (int i = 0; i < warmCount; i++)
+                    _stack.Push(CreateInstance());
+            }
+
+            public GameObject Get(Vector3 pos, Quaternion rot)
+            {
+                GameObject go = _stack.Count > 0 ? _stack.Pop() : CreateInstance();
+                go.transform.SetPositionAndRotation(pos, rot);
+                go.SetActive(true);
+                return go;
+            }
+
+            public void Return(GameObject go)
+            {
+                if (go == null) return;
+                go.SetActive(false);
+                go.transform.SetParent(_parent, false);
+                _stack.Push(go);
+            }
+
+            public void Dispose()
+            {
+                while (_stack.Count > 0)
+                {
+                    GameObject go = _stack.Pop();
+                    if (go != null) Object.Destroy(go);
+                }
+            }
+
+            private GameObject CreateInstance()
+            {
+                GameObject go = Object.Instantiate(_prefab, _parent);
+                go.SetActive(false);
+                return go;
+            }
         }
     }
 }

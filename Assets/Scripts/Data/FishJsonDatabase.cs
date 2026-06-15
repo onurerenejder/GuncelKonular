@@ -28,7 +28,17 @@ namespace ARFishApp.Data
                 return null;
             }
 
-            FishJsonData data = JsonUtility.FromJson<FishJsonData>(jsonAsset.text);
+            FishJsonData data;
+            try
+            {
+                data = JsonUtility.FromJson<FishJsonData>(jsonAsset.text);
+            }
+            catch (System.ArgumentException ex)
+            {
+                Debug.LogError($"[FishJsonDatabase] JSON parse hatasi ({normalizedId}): {ex.Message}");
+                return null;
+            }
+
             if (data == null)
             {
                 Debug.LogWarning($"[FishJsonDatabase] JSON okunamadi: {normalizedId}");
