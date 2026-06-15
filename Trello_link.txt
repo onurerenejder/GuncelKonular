@@ -1,0 +1,16 @@
+AR Tabanlı İnteraktif Balık Anatomisi, Habitatı ve Ekosistem Sistemi
+Proje Trello Panosu
+
+Trello Board URL:
+https://trello.com/b/eJzzLIqG/guncelk
+
+Pano Yapısı (önerilen sütunlar):
+- Backlog
+- Faz 1 — Çekirdek Entegrasyon
+- Faz 2 — Girdi ve Etkileşim
+- Faz 3 — Ekosistem ve Performans
+- Faz 4 — Network ve Test
+- Faz 5 — Dokümantasyon ve Yayın
+- Tamamlandı
+
+Görev detayları için: KALAN_TASKLAR_README.md

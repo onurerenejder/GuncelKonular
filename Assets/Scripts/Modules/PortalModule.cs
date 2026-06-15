@@ -49,7 +49,7 @@ namespace ARFishApp.Modules
 
         private void Update()
         {
-            if (SystemStateManager.Instance.CurrentModule == GetModuleType() && arCamera != null && portalDoorway != null)
+            if (SystemStateManager.Instance != null && SystemStateManager.Instance.CurrentModule == GetModuleType() && arCamera != null && portalDoorway != null)
             {
                 // Vector math to detect if the user's physical camera crossed the portal's threshold
                 Vector3 cameraOffset = arCamera.transform.position - portalDoorway.position;

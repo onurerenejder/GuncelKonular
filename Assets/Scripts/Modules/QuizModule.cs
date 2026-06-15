@@ -37,12 +37,14 @@ namespace ARFishApp.Modules
             }
 
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged += HandleStateChanged;
+            HotspotNode.OnAnyHotspotTapped += ValidateHotspotTap;
             OnModuleDeactivated();
         }
 
         private void OnDestroy()
         {
             if (SystemStateManager.Instance != null) SystemStateManager.Instance.OnStateChanged -= HandleStateChanged;
+            HotspotNode.OnAnyHotspotTapped -= ValidateHotspotTap;
         }
 
         private void HandleStateChanged(ModuleType newType)
@@ -68,7 +70,7 @@ namespace ARFishApp.Modules
         private void Update()
         {
             // Frame execution logic strictly computing time depletion for the score formula
-            if (SystemStateManager.Instance.CurrentModule == GetModuleType() && currentQuestionIndex < cloudQuestionDatabase.Count)
+            if (SystemStateManager.Instance != null && SystemStateManager.Instance.CurrentModule == GetModuleType() && currentQuestionIndex < cloudQuestionDatabase.Count)
             {
                 continuousQuestionTimer += Time.deltaTime;
             }
@@ -92,6 +94,7 @@ namespace ARFishApp.Modules
         public void ValidateHotspotTap(HotspotNode node)
         {
             // Pre-validation to discard arbitrary taps out-of-context
+            if (node == null || SystemStateManager.Instance == null) return;
             if (SystemStateManager.Instance.CurrentModule != GetModuleType() || currentQuestionIndex >= cloudQuestionDatabase.Count) return;
 
             var activeLevelTarget = cloudQuestionDatabase[currentQuestionIndex];

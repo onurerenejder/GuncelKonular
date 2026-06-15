@@ -34,5 +34,7 @@ namespace ARFishApp.Data
         public AudioClip FeedingAudioClip;
         public AudioClip InterspeciesAudioClip;
         public AudioClip PredatorPreyAudioClip;
+        public AudioClip QuizAudioClip;
+        public AudioClip PortalAudioClip;
     }
 }

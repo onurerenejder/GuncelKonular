@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import fpdf; print\\('fpdf ok'\\)\")",
+      "Bash(python3 -c \"import reportlab; print\\('reportlab ok'\\)\")",
+      "Bash(pandoc --version)",
+      "Bash(python3 -c \"import fpdf2; print\\('fpdf2 ok'\\)\")",
+      "Bash(python3 -c \"from fpdf import FPDF; print\\('fpdf ok'\\)\")",
+      "Bash(pip3 list *)",
+      "Bash(pip3 install *)"
+    ]
+  }
+}

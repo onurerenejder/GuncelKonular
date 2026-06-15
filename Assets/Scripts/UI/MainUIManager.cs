@@ -11,37 +11,48 @@ namespace ARFishApp.UI
     {
         public void OnAnatomyButtonClicked()
         {
-            SystemStateManager.Instance.ChangeState(ModuleType.Anatomy);
+            ChangeStateIfReady(ModuleType.Anatomy);
         }
 
         public void OnHabitatButtonClicked()
         {
-            SystemStateManager.Instance.ChangeState(ModuleType.Habitat);
+            ChangeStateIfReady(ModuleType.Habitat);
         }
 
         public void OnFeedingButtonClicked()
         {
-            SystemStateManager.Instance.ChangeState(ModuleType.Feeding);
+            ChangeStateIfReady(ModuleType.Feeding);
         }
 
         public void OnInterspeciesButtonClicked()
         {
-            SystemStateManager.Instance.ChangeState(ModuleType.InterspeciesRelations);
+            ChangeStateIfReady(ModuleType.InterspeciesRelations);
         }
 
         public void OnPredatorPreyButtonClicked()
         {
-            SystemStateManager.Instance.ChangeState(ModuleType.PredatorPrey);
+            ChangeStateIfReady(ModuleType.PredatorPrey);
         }
 
         public void OnQuizButtonClicked()
         {
-            SystemStateManager.Instance.ChangeState(ModuleType.Quiz);
+            ChangeStateIfReady(ModuleType.Quiz);
         }
 
         public void OnPortalButtonClicked()
         {
-            SystemStateManager.Instance.ChangeState(ModuleType.Portal);
+            ChangeStateIfReady(ModuleType.Portal);
+        }
+
+        private void ChangeStateIfReady(ModuleType moduleType)
+        {
+            if (SystemStateManager.Instance == null)
+            {
+                Debug.LogWarning($"[MainUIManager] Cannot switch to {moduleType}: SystemStateManager is missing.");
+                return;
+            }
+
+            SystemStateManager.Instance.ChangeState(moduleType);
         }
     }
 }

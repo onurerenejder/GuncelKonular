@@ -24,7 +24,7 @@ namespace ARFishApp.Interaction
             lineRenderer.enabled = false;
         }
 
-        private void OnMouseDown()
+        public void ApplyTap()
         {
             ApplyTapInteraction();
         }

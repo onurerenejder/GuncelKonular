@@ -72,6 +72,8 @@ namespace ARFishApp.Core
                         case ModuleType.Feeding: clipToPlay = data.FeedingAudioClip; break;
                         case ModuleType.InterspeciesRelations: clipToPlay = data.InterspeciesAudioClip; break;
                         case ModuleType.PredatorPrey: clipToPlay = data.PredatorPreyAudioClip; break;
+                        case ModuleType.Quiz: clipToPlay = data.QuizAudioClip; break;
+                        case ModuleType.Portal: clipToPlay = data.PortalAudioClip; break;
                     }
                     Debug.Log($"[AudioInformationManager] Clip from FishData after switch: {(clipToPlay != null ? clipToPlay.name : "null")}");
                 }

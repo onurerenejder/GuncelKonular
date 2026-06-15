@@ -25,8 +25,21 @@ namespace ARFishApp.AR
 #endif
         }
 
-        private void OnEnable() => trackedImageManager.trackablesChanged.AddListener(OnTrackedImagesChanged);
-        private void OnDisable() => trackedImageManager.trackablesChanged.RemoveListener(OnTrackedImagesChanged);
+        private void OnEnable()
+        {
+            if (trackedImageManager != null)
+            {
+                trackedImageManager.trackablesChanged.AddListener(OnTrackedImagesChanged);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (trackedImageManager != null)
+            {
+                trackedImageManager.trackablesChanged.RemoveListener(OnTrackedImagesChanged);
+            }
+        }
 
         private void OnTrackedImagesChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
         {
@@ -41,7 +54,10 @@ namespace ARFishApp.AR
                 if (fishEntityContainer != null)
                     fishEntityContainer.SetActive(false);
 
-                SystemStateManager.Instance.ChangeState(ModuleType.None);
+                if (SystemStateManager.Instance != null)
+                {
+                    SystemStateManager.Instance.ChangeState(ModuleType.None);
+                }
             }
         }
 
@@ -54,7 +70,7 @@ namespace ARFishApp.AR
                     fishEntityContainer.SetActive(true);
                     
                     // Boot up the first module visually when target acquired
-                    if (SystemStateManager.Instance.CurrentModule == ModuleType.None)
+                    if (SystemStateManager.Instance != null && SystemStateManager.Instance.CurrentModule == ModuleType.None)
                     {
                         SystemStateManager.Instance.ChangeState(ModuleType.Anatomy);
                     }

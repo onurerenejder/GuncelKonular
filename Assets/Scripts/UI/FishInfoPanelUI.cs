@@ -108,7 +108,16 @@ namespace ARFishApp.UI
             FishJsonData data = currentFish != null ? FishJsonDatabase.Load(currentFish.id) : null;
             if (data == null)
             {
-                SetText("Bilgi bulunamadi", "Bu balik icin JSON verisi henuz hazir degil.");
+                FishData fallbackData = currentFish != null ? currentFish.fishData : null;
+                if (fallbackData != null)
+                {
+                    SetText(BuildTitle(fallbackData, moduleType), ResolveBody(fallbackData, moduleType));
+                }
+                else
+                {
+                    SetText("Bilgi bulunamadi", "Bu balik icin JSON verisi henuz hazir degil.");
+                }
+
                 Show();
                 return;
             }
@@ -123,6 +132,13 @@ namespace ARFishApp.UI
         {
             string moduleName = ResolveModuleDisplayName(moduleType);
             return $"{data.displayName} - {moduleName}";
+        }
+
+        private static string BuildTitle(FishData data, ModuleType moduleType)
+        {
+            string moduleName = ResolveModuleDisplayName(moduleType);
+            string fishName = string.IsNullOrWhiteSpace(data.FishName) ? "Balik" : data.FishName;
+            return $"{fishName} - {moduleName}";
         }
 
         private static string ResolveBody(FishJsonData data, ModuleType moduleType)
@@ -143,6 +159,25 @@ namespace ARFishApp.UI
                     return BuildQuizText(data);
                 default:
                     return data.general;
+            }
+        }
+
+        private static string ResolveBody(FishData data, ModuleType moduleType)
+        {
+            switch (moduleType)
+            {
+                case ModuleType.Anatomy:
+                    return data.AnatomyDescription;
+                case ModuleType.Habitat:
+                    return data.HabitatType;
+                case ModuleType.Feeding:
+                    return data.DietDescription;
+                case ModuleType.PredatorPrey:
+                    return data.Predators != null && data.Predators.Length > 0
+                        ? string.Join(", ", data.Predators)
+                        : data.DietDescription;
+                default:
+                    return data.GeneralDescription;
             }
         }
 

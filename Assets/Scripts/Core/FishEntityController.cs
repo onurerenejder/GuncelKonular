@@ -1,5 +1,6 @@
 using UnityEngine;
 using ARFishApp.Data;
+using ARFishApp.Modules;
 
 namespace ARFishApp.Core
 {
@@ -39,10 +40,49 @@ namespace ARFishApp.Core
         private void InitializeArchitecture()
         {
             Debug.Log($"[FishEntityController] Bootstrapping Educational Data for: {fishDataConfig.FishName} ({fishDataConfig.ScientificName})");
-            
-            // Example architectural workflow:
-            // Extracting values from FishData and passing it to the UI or audio systems
-            // e.g., FindObjectOfType<UIController>().SetDescriptionText(fishDataConfig.GeneralDescription);
+
+            BindFeedingModules();
+            BindHabitatModules();
+        }
+
+        private void BindFeedingModules()
+        {
+            FeedingModule[] feedingModules = GetComponentsInChildren<FeedingModule>(true);
+            for (int i = 0; i < feedingModules.Length; i++)
+            {
+                if (feedingModules[i] != null)
+                {
+                    feedingModules[i].fishData = fishDataConfig;
+                }
+            }
+        }
+
+        private void BindHabitatModules()
+        {
+            HabitatModule[] habitatModules = GetComponentsInChildren<HabitatModule>(true);
+            for (int i = 0; i < habitatModules.Length; i++)
+            {
+                if (habitatModules[i] != null)
+                {
+                    habitatModules[i].currentHabitat = ResolveHabitatType(fishDataConfig.HabitatType);
+                }
+            }
+        }
+
+        private EnvironmentType ResolveHabitatType(string habitatType)
+        {
+            if (string.IsNullOrWhiteSpace(habitatType))
+            {
+                return EnvironmentType.CoralReef;
+            }
+
+            string normalized = habitatType.ToLowerInvariant();
+            if (normalized.Contains("deep") || normalized.Contains("ocean") || normalized.Contains("okyanus") || normalized.Contains("derin"))
+            {
+                return EnvironmentType.DeepOcean;
+            }
+
+            return EnvironmentType.CoralReef;
         }
     }
 }
